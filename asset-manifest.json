@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/izkor/static/css/main.60e55d32.css",
+    "main.js": "/izkor/static/js/main.45cdca36.js",
+    "static/js/787.8a298b8f.chunk.js": "/izkor/static/js/787.8a298b8f.chunk.js",
+    "static/media/frank.ttf": "/izkor/static/media/frank.537369bf8c699772fc0c.ttf",
+    "service-worker.js": "/izkor/service-worker.js",
+    "static/media/Assistant-Regular.ttf": "/izkor/static/media/Assistant-Regular.992f6822fa89dedcae08.ttf",
+    "index.html": "/izkor/index.html",
+    "main.60e55d32.css.map": "/izkor/static/css/main.60e55d32.css.map",
+    "main.45cdca36.js.map": "/izkor/static/js/main.45cdca36.js.map",
+    "787.8a298b8f.chunk.js.map": "/izkor/static/js/787.8a298b8f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.60e55d32.css",
+    "static/js/main.45cdca36.js"
+  ]
+}
