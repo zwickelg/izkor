@@ -92,8 +92,8 @@ const PrayerDetails: React.FC = () => {
 
   useEffect(() => {
     const compressed = compressJsonToShortString(formData);
-    if (!compressedUrl) setCompressedUrl(encodeURIComponent(compressed));
-  }, []);
+    setCompressedUrl(compressed);
+  }, [formData]);
 
   const handleCopyClickPolyfill = (textValue: string) => {
     console.log("handleCopyClickPolyfill textValue " + textValue);
