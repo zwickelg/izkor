@@ -1,0 +1,68 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import prayersButtons from "./PrayerButtons.module.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import Pagination from "@mui/material/Pagination";
+
+interface PrayerThilimPageProps {
+  ind: number;
+  handlePrev?: () => void;
+  handleNext?: () => void;
+  disabledPrev?: boolean;
+  disabledNext?: boolean;
+}
+
+const PrayerButtons: React.FC<PrayerThilimPageProps> = ({
+  ind,
+  handlePrev: customHandlePrev,
+  handleNext: customHandleNext,
+  disabledPrev = false,
+  disabledNext = false,
+}) => {
+  const navigate = useNavigate();
+  const formData = useSelector((state: RootState) => state.izkor);
+  const [page, setPage] = React.useState(1);
+  /*   const handlePrev = customHandlePrev
+    ? customHandlePrev
+    : () => {
+        if (!disabledPrev) {
+          if (ind - 1 < 0) navigate("/");
+          else navigate(`/page${ind - 1}`);
+          window.scrollTo(0, 0);
+        }
+      };
+
+  const handleNext = customHandleNext
+    ? customHandleNext
+    : () => {
+        if (!disabledNext) {
+          console.log("handleNext");
+          if (ind + 1 > 14) navigate("/");
+          else navigate(`/page${ind + 1}`);
+          window.scrollTo(0, 0);
+        }
+      };
+ */
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    console.log(`ind ${ind} page ${value}`);
+    setPage(value);
+    if (event) navigate(`/page${value}`);
+  };
+
+  return (
+    <div>
+      <div className={prayersButtons.buttonsDiv}>
+        <Pagination
+          count={14}
+          variant="outlined"
+          onChange={handleChange}
+          page={ind}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default PrayerButtons;

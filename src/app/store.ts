@@ -1,9 +1,11 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import counterReducer from "../features/counter/counterSlice";
+import izkorReducer from "../features/izkor/izkorSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    izkor: izkorReducer,
   },
 });
 

@@ -1,0 +1,43 @@
+.scrollable-page {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+@media print {
+  .scrollable-page {
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Set A4 paper size (210mm x 297mm) with margins */
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+
+  section {
+    page-break-after: always;
+  }
+
+  /* Reset some styles for printing */
+  body,
+  .scrollable-page,
+  p,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    color: #000 !important;
+  }
+
+  /* Adjust font size to fit A4 page */
+  p,
+  span {
+    font-size: 12pt;
+    color: #000 !important;
+  }
+}

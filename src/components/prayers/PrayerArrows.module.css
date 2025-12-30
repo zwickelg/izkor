@@ -1,0 +1,20 @@
+.arrows {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Additional styles for the icons if needed */
+.arrows a {
+  text-decoration: none;
+  color: inherit; /* Assuming you want to inherit the color from the parent */
+}
+
+/* Adjusting spacing if necessary */
+.arrows a:first-child {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.arrows a:last-child {
+  margin-left: 10px; /* Adjust the margin as needed */
+}

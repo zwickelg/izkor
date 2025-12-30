@@ -1,0 +1,63 @@
+input,
+option,
+select {
+  font-size: 1rem;
+}
+h2 {
+  padding: 0;
+  margin: 3px;
+}
+.all {
+  font-family: "Assistant";
+  width: 100%;
+  padding: 0px 20px;
+  height: 85%;
+  overflow: auto;
+  /*   color: var(--text-color); */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: "Assistant";
+  width: 100%;
+  margin: 0;
+  padding: 0px 20px;
+  overflow: scroll;
+  height: 85vh; /* Ensure the container takes at least the full height of the viewport */
+}
+
+.bottomButtons {
+  color: #ffffff;
+  position: fixed;
+  width: 90%;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #000; /* Set a background color to make the buttons visible on top of content */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for visual separation */
+  z-index: 1; /* Ensure the buttons appear on top of other content */
+}
+
+section {
+  direction: rtl;
+}
+
+.currentSection {
+  color: #ffffff;
+  height: 1em;
+}
+.buttonStyle {
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+}
+
+.button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}

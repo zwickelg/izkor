@@ -1,0 +1,236 @@
+/* src/features/sephardicAshkenazic/Form.module.css */
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  font-family: "Assistant";
+  direction: rtl;
+  text-align: right;
+}
+.formContainerxx {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 340px;
+  margin: 5px auto;
+  padding: 10px 40px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.titlexxx {
+  font-size: 2rem;
+  text-align: center;
+  padding: 0 0 20px 0;
+}
+
+.formGroup {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.row {
+  height: 100px;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.formInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+.input {
+  text-align: right;
+}
+.formSelect {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+.errorText {
+  color: red;
+  text-align: left;
+}
+.buttonOk {
+  display: flex;
+  justify-content: center;
+}
+.genderDiv {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.versionDiv {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.hidden {
+  display: none;
+}
+.ContentBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 36px 48px 0px 48px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+mainForm.Label span {
+  color: var(--components-switch-slide-fill, #000);
+  text-align: right;
+  font-family: Assistant;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 1.8px;
+}
+.Title {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  align-self: stretch;
+}
+.Title span {
+  color: var(--common-white-main, #fff);
+  text-align: center;
+  font-family: Assistant;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  letter-spacing: 9.72px;
+}
+.FormBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  align-self: stretch;
+}
+.FieldBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  align-self: stretch;
+}
+.Label {
+  display: flex;
+  padding: 3px 12px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  color: #fff;
+  /* background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.83) -0.19%,
+    rgba(255, 255, 255, 0) 100.19%
+  ); */
+}
+.Labelxxx {
+  display: flex;
+  padding: 3px 12px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  color: #000;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.83) -0.19%,
+    rgba(255, 255, 255, 0) 100.19%
+  );
+}
+input {
+  border: 0;
+}
+.TextInput {
+  background-color: linear-gradient(to right, #000, #fff);
+  border-image: linear-gradient(
+    to right,
+    #000,
+    #fff
+  ); /* Define the linear gradient */
+  border-image-slice: 1; /* Ensure the entire border is covered by the gradient */
+}
+.ToggleBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  align-self: stretch;
+}
+.ToggleTitle {
+  display: flex;
+  padding: 3px 12px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 6px;
+  align-self: stretch;
+}
+.Toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: -1px;
+  align-self: stretch;
+}
+.Option1 {
+  display: flex;
+  padding: 12px 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex: 1 0 0;
+  align-self: stretch;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0.83) -0.19%,
+    rgba(255, 255, 255, 0) 100.19%
+  );
+  border: 1px solid #aaaaaa;
+}
+.Option2 {
+  display: flex;
+  padding: 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex: 1 0 0;
+  align-self: stretch;
+  background: #000;
+  color: #aaaaaa;
+  border: 1px solid #aaaaaa;
+}
+.NextBox {
+  display: flex;
+  color: #000;
+  width: 375px;
+  height: 60px;
+  padding: 3px 30px;
+  align-items: center;
+  gap: 6px;
+  position: absolute;
+  bottom: 0px;
+  justify-content: left;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 255, 255, 0) -0.18%,
+    rgba(255, 255, 255, 0.8) 100.18%
+  );
+}
+
+.NextBox svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}

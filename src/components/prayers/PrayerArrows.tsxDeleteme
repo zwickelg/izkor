@@ -1,0 +1,30 @@
+// src/pages/DetailsPage.tsx
+import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import Fab from "@mui/material/Fab";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import styles from "./PrayerArrows.module.css";
+
+interface PrayerArrowsProps {
+  ind: number;
+}
+
+const PrayerArrows: React.FC<PrayerArrowsProps> = ({ ind }) => {
+  return (
+    <div className={styles.arrows}>
+      <a href={`#${ind}`}>
+        <Fab color="primary" aria-label="add" size="small">
+          <ArrowRightIcon />
+        </Fab>
+      </a>
+      <a href={`#${ind + 1}`}>
+        <Fab color="primary" aria-label="add" size="small">
+          <ArrowLeftIcon />
+        </Fab>
+      </a>
+    </div>
+  );
+};
+export default PrayerArrows;

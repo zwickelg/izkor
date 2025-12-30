@@ -1,0 +1,48 @@
+.switch input {
+  display: none;
+}
+
+/* Style the switch container */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Style the slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+/* Style the slider when it's checked (ON position) */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: black;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Apply the checked style to the slider */
+.switch input:checked + .slider {
+  background-color: #ccc;
+}
+
+/* Apply the checked style to the slider's knob */
+.switch input:checked + .slider:before {
+  background-color: white; /* Change the color here */
+  transform: translateX(26px);
+}

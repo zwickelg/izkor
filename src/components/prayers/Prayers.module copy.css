@@ -1,0 +1,120 @@
+input,
+option,
+select {
+  font-size: 1rem;
+}
+h2 {
+  padding: 0;
+  margin: 3px;
+}
+.all {
+  font-family: "Assistant";
+  width: 100%;
+  padding: 0px 20px;
+  height: 85%;
+  overflow: auto;
+  /*   color: var(--text-color); */
+}
+
+.page {
+  font-family: "Assistant";
+  width: 100%;
+  padding: 0px 20px;
+  height: 85%;
+  overflow: auto;
+
+  /*   color: var(--text-color); */
+}
+
+.titleEnd {
+  font-size: 2rem;
+  text-align: center;
+  padding-top: 20px;
+}
+.text {
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  letter-spacing: 1px;
+}
+.instructions {
+  font-size: 1rem;
+}
+.firstChar {
+  font-size: 2rem;
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.formLabel {
+  font-size: 1rem;
+}
+
+.izkorImage {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.izkorImage img {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 200px;
+}
+.shareButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+  padding: 10px;
+}
+.shareButtonsReadOnly {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 150px;
+  padding: 10px;
+}
+.shareButton {
+  border: none;
+  border-radius: 4px;
+  width: 1em;
+  height: 1em;
+  padding: 0;
+  display: flex;
+  fill: currentColor;
+  align-content: center;
+}
+.shareButtonCopy {
+  background-color: white;
+  border-radius: 6px;
+  height: 34px;
+  border: 1px solid black;
+  width: 34px;
+  padding: 4px;
+  display: flex;
+  align-content: center;
+}
+
+.shareButton img {
+  width: 34px;
+}
+.paginationDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
