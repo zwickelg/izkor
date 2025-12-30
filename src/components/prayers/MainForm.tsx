@@ -55,7 +55,8 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
     }
   }, []);
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
+    // Check both hash-based search and standard window search for robustness with HashRouter
+    const searchParams = new URLSearchParams(location.search || window.location.search);
     const encodedString = searchParams.get("data");
 
     if (encodedString) {

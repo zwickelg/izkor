@@ -42,8 +42,8 @@ const DetailRow = ({ label, value }: { label: string; value: string | undefined 
   </Box>
 );
 
-const baseUrl = "https://d5ajvage8yosb.cloudfront.net";
-
+const baseUrls3 = "https://d5ajvage8yosb.cloudfront.net";
+const baseUrl = "https://zwickelg.github.io/izkor";
 const PrayerDetails: React.FC = () => {
   const [compressedUrl, setCompressedUrl] = useState("");
   const navigate = useNavigate();
@@ -110,29 +110,32 @@ const PrayerDetails: React.FC = () => {
   const handlePrint = () => {
     let width = 600;
     let height = 400;
-    window.open(`/print?data=${compressedUrl}`, "windowName", `width=${width},height=${height}`);
+    // For HashRouter, the route must be after #/
+    window.open(`${window.location.origin}${window.location.pathname}#/print?data=${compressedUrl}`, "windowName", `width=${width},height=${height}`);
   };
 
   const handleShareWithWhatsApp = () => {
     console.log("handleShareWithWhatsApp compressedUrl " + compressedUrl);
     window.open(
-      `https://api.whatsapp.com/send?text=${baseUrl}?data=${encodeURIComponent(compressedUrl)}`
+      `https://api.whatsapp.com/send?text=${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`
     );
   };
 
   console.log("navigate PrayerHome: ");
   const handleCopyClick = () => {
     console.log("handleCopyClick textValue " + compressedUrl);
+    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
     if (navigator && navigator.clipboard)
-      navigator.clipboard.writeText(`${baseUrl}?data=${compressedUrl}`);
+      navigator.clipboard.writeText(fullUrl);
     else {
-      handleCopyClickPolyfill(`${baseUrl}?data=${compressedUrl}`);
+      handleCopyClickPolyfill(fullUrl);
     }
   };
 
   const handleNfcClick = async () => {
-    console.log("handleNfxClick textValue " + `${baseUrl}?data=${compressedUrl}`);
-    await handleWriteUrl(`${baseUrl}?data=${compressedUrl}`);
+    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
+    console.log("handleNfxClick textValue " + fullUrl);
+    await handleWriteUrl(fullUrl);
   };
 
   return (

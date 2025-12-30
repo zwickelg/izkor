@@ -26,7 +26,7 @@ const Main = () => {
   return (
     <div className={`main `}>
       <Routes>
-        <Route path="/" element={<MainForm />} />
+        <Route index element={<MainForm />} />
         <Route path="/nfc" element={<NfcReadWrite />} />
         <Route path="/page0" element={<MainForm />} />
         <Route path="/page1" element={<PrayerDetails />} />
