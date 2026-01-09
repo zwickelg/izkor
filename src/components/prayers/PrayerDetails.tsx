@@ -48,17 +48,10 @@ const PrayerDetails: React.FC = () => {
   const [compressedUrl, setCompressedUrl] = useState("");
   const navigate = useNavigate();
   const formData = useSelector((state: RootState) => state.izkor);
-  const [showFullScreenButton, setShowFullScreenButton] = useState(true);
 
   useEffect(() => {
     const handleFullScreenChange = () => {
       console.log("handleFullScreenChange");
-      const documentWithFullscreen = document as CustomDocument;
-      setShowFullScreenButton(
-        !documentWithFullscreen.fullscreenElement &&
-        !documentWithFullscreen.webkitFullscreenElement &&
-        !documentWithFullscreen.msFullscreenElement
-      );
     };
     document.addEventListener("fullscreenchange", handleFullScreenChange);
     document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
@@ -80,7 +73,6 @@ const PrayerDetails: React.FC = () => {
     } else if (elem.msRequestFullscreen) {
       elem.msRequestFullscreen();
     }
-    setShowFullScreenButton(false);
   };
 
   const handleNext = () => {
@@ -111,20 +103,21 @@ const PrayerDetails: React.FC = () => {
     let width = 600;
     let height = 400;
     // For HashRouter, the route must be after #/
-    window.open(`${window.location.origin}${window.location.pathname}#/print?data=${compressedUrl}`, "windowName", `width=${width},height=${height}`);
+    const printUrl = `${window.location.origin}${window.location.pathname}#/print?data=${encodeURIComponent(compressedUrl)}`;
+    window.open(printUrl, "windowName", `width=${width},height=${height}`);
   };
 
   const handleShareWithWhatsApp = () => {
     console.log("handleShareWithWhatsApp compressedUrl " + compressedUrl);
+    const shareableUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
     window.open(
-      `https://api.whatsapp.com/send?text=${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(shareableUrl)}`
     );
   };
 
-  console.log("navigate PrayerHome: ");
   const handleCopyClick = () => {
     console.log("handleCopyClick textValue " + compressedUrl);
-    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
+    const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
     if (navigator && navigator.clipboard)
       navigator.clipboard.writeText(fullUrl);
     else {
@@ -133,13 +126,13 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleNfcClick = async () => {
-    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
+    const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
     console.log("handleNfxClick textValue " + fullUrl);
     await handleWriteUrl(fullUrl);
   };
 
   return (
-    <Container maxWidth="sm" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", py: 4 }}>
+    <Container maxWidth="sm" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", py: 2 }}>
       <Stack spacing={4} sx={{ my: "auto" }}>
         <Fade in={true} timeout={1000}>
           <Box sx={{ textAlign: "center" }}>

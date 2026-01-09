@@ -147,8 +147,8 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
     dispatch(setVersion(newGender as "sephardic" | "ashkenazic"));
   };
   return (
-    <Container maxWidth="sm" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", py: 4 }}>
-      <Stack spacing={4} sx={{ my: "auto" }}>
+    <Container maxWidth="sm" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", py: 2 }}>
+      <Stack spacing={1} sx={{ my: "auto" }}>
         <Fade in={true} timeout={1000}>
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" component="h1" gutterBottom color="primary.main" sx={{ fontFamily: 'FrankRuehl, serif', fontWeight: 'bold', textShadow: "0px 4px 12px rgba(0,0,0,0.3)" }}>
@@ -171,7 +171,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
               overflow: "visible"
             }}
           >
-            <CardContent sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
 
               <TextField
                 label="שם פרטי"
@@ -263,6 +263,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
                   mt: 2,
                   py: 1.5,
                   fontSize: "1.1rem",
+                  color: "white",
                   borderRadius: "50px",
                   background: "linear-gradient(45deg, #1a237e 30%, #534bae 90%)", // Rich gradient
                   boxShadow: "0 3px 5px 2px rgba(26, 35, 126, .3)",

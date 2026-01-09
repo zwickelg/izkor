@@ -23,7 +23,6 @@ const PrayerButtons: React.FC<PrayerThilimPageProps> = ({
   disabledNext = false,
 }) => {
   const navigate = useNavigate();
-  const formData = useSelector((state: RootState) => state.izkor);
 
   const handlePrev = customHandlePrev
     ? customHandlePrev

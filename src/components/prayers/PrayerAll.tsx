@@ -5,7 +5,7 @@ import { Box, IconButton, Typography, Paper } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-import PrayerStart from "./PrayerStart";
+import PrayerStartN from "./PrayerStartN";
 import PrayerThilimLG from "./PrayerThilimLG";
 import PrayerThilimTZ from "./PrayerThilimTZ";
 import PrayerThilimYZ from "./PrayerThilimYZ";
@@ -31,8 +31,8 @@ const PrayerAll: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const sectionRefs: SectionRefsArray = [
-    { ref: useRef<HTMLDivElement>(null), name: "Section 0", comp: PrayerStart },
-    { ref: useRef<HTMLDivElement>(null), name: "", comp: PrayerStart },
+    { ref: useRef<HTMLDivElement>(null), name: "Section 0", comp: PrayerStartN },
+    { ref: useRef<HTMLDivElement>(null), name: "", comp: PrayerStartN },
     { ref: useRef<HTMLDivElement>(null), name: `תהילים ל"ג`, comp: PrayerThilimLG },
     { ref: useRef<HTMLDivElement>(null), name: `תהילים ט"ז`, comp: PrayerThilimTZ },
     { ref: useRef<HTMLDivElement>(null), name: 'תהילים י"ז', comp: PrayerThilimYZ },

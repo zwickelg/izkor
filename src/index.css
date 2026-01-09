@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
 }
+
 /* :root {
   --background-color: #333;
   --text-color: white;
@@ -19,6 +20,7 @@ bodyxxx {
   width: 100vw;
   height: 100vh;
 }
+
 #rootxx {
   height: 100%;
   width: 100%;
@@ -29,14 +31,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
 @font-face {
   font-family: "FrankRuehl";
   src: url("fonts/frank.ttf") format("opentype");
 }
+
 @font-face {
   font-family: "Assistant";
   src: url("fonts/Assistant-Regular.ttf") format("opentype");
 }
+
 /* .lightTheme {
   --background-color: white;
   --text-color: black;
@@ -53,18 +58,21 @@ code {
   --text-color: white;
   --border-color: white;
 }
+
 .main {
   height: 100vh;
   width: 100vw;
   margin: 0;
   padding: 0;
 }
+
 .errorText {
   color: red;
 
   font-size: 15px;
   padding: 10px;
 }
+
 .buttonsDiv {
   direction: rtl;
   position: fixed;
@@ -75,9 +83,12 @@ code {
   align-items: center;
   justify-content: space-around;
   margin-top: 16px;
-  padding: 20px; /* Add padding for better spacing */
-  z-index: 100; /* Ensure it's above other content */
+  padding: 20px;
+  /* Add padding for better spacing */
+  z-index: 100;
+  /* Ensure it's above other content */
 }
+
 .dialogButton {
   padding: 10px;
 }

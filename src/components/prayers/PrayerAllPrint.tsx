@@ -9,7 +9,7 @@ import { decompressShortStringToJson } from "../utils/compressUtil";
 import { updateFields } from "../../features/izkor/izkorSlice";
 import styles from "./PrayersAllPrint.module.css";
 import "./PrayersAllPrint.css";
-import PrayerStart from "./PrayerStart";
+import PrayerStartN from "./PrayerStartN";
 import PrayerThilimLG from "./PrayerThilimLG";
 import PrayerThilimTZ from "./PrayerThilimTZ";
 import PrayerThilimYZ from "./PrayerThilimYZ";
@@ -65,7 +65,7 @@ const PrayerAllPrint: React.FC = () => {
         <PrayerEnd />
       </section>
       <section id="1">
-        <PrayerStart />
+        <PrayerStartN />
       </section>
 
       <section id="2">

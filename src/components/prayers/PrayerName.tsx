@@ -750,7 +750,7 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
           color: "primary.main",
         }}
       >
-        אותיות {name === "נשמה" ? "הנשמה" : "השם"}
+        {name === "נשמה" ? "אותיות נשמה" : "אותיות לפי שם"}
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         {name.split("").map((letter, index) => (

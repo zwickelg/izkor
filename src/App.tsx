@@ -23,6 +23,7 @@ function MyApp() {
         sx={{
           display: "flex",
           minHeight: "100vh",
+          height: "100vh",
           width: "100%",
           padding: 0,
           margin: 0,

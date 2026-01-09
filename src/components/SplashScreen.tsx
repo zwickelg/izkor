@@ -17,17 +17,16 @@ interface CustomHTMLElement extends HTMLElement {
 }
 const SplashScreen = () => {
   const navigate = useNavigate();
-  const [showFullScreenButton, setShowFullScreenButton] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const handleFullScreenChange = () => {
       const documentWithFullscreen = document as CustomDocument;
-      setShowFullScreenButton(
+      /* setShowFullScreenButton(
         !documentWithFullscreen.fullscreenElement &&
           !documentWithFullscreen.webkitFullscreenElement &&
           !documentWithFullscreen.msFullscreenElement
-      );
+      ); */
     };
     document.addEventListener("fullscreenchange", handleFullScreenChange);
     document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
@@ -59,7 +58,7 @@ const SplashScreen = () => {
       /* IE11 */
       elem.msRequestFullscreen();
     }
-    setShowFullScreenButton(false);
+    // setShowFullScreenButton(false);
     navigate("/page0");
   };
 
