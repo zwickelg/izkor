@@ -1,18 +1,23 @@
 {
   "files": {
-    "main.css": "/izkor/static/css/main.6b61bb54.css",
-    "main.js": "/izkor/static/js/main.fe61b5d9.js",
+    "main.css": "/izkor/static/css/main.22f59d5c.css",
+    "main.js": "/izkor/static/js/main.14952e8f.js",
     "static/js/787.8a298b8f.chunk.js": "/izkor/static/js/787.8a298b8f.chunk.js",
     "static/media/frank.ttf": "/izkor/static/media/frank.537369bf8c699772fc0c.ttf",
     "service-worker.js": "/izkor/service-worker.js",
+    "static/media/Assistant-SemiBold.ttf": "/izkor/static/media/Assistant-SemiBold.1d28e66bb392394cb09d.ttf",
+    "static/media/Assistant-Light.ttf": "/izkor/static/media/Assistant-Light.1af74b30299892efee4f.ttf",
     "static/media/Assistant-Regular.ttf": "/izkor/static/media/Assistant-Regular.992f6822fa89dedcae08.ttf",
+    "static/media/Assistant-Bold.ttf": "/izkor/static/media/Assistant-Bold.8ce32fc768ffb230776b.ttf",
+    "static/media/Assistant-Medium.ttf": "/izkor/static/media/Assistant-Medium.21f035dd574e9e732477.ttf",
+    "static/media/Assistant-ExtraBold.ttf": "/izkor/static/media/Assistant-ExtraBold.1f1822d8cdb18832b9a3.ttf",
     "index.html": "/izkor/index.html",
-    "main.6b61bb54.css.map": "/izkor/static/css/main.6b61bb54.css.map",
-    "main.fe61b5d9.js.map": "/izkor/static/js/main.fe61b5d9.js.map",
+    "main.22f59d5c.css.map": "/izkor/static/css/main.22f59d5c.css.map",
+    "main.14952e8f.js.map": "/izkor/static/js/main.14952e8f.js.map",
     "787.8a298b8f.chunk.js.map": "/izkor/static/js/787.8a298b8f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6b61bb54.css",
-    "static/js/main.fe61b5d9.js"
+    "static/css/main.22f59d5c.css",
+    "static/js/main.14952e8f.js"
   ]
 }
