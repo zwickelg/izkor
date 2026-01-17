@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/izkor/static/css/main.c2ef0e47.css",
-    "main.js": "/izkor/static/js/main.2eafaf76.js",
+    "main.js": "/izkor/static/js/main.5f97c011.js",
     "static/js/787.8a298b8f.chunk.js": "/izkor/static/js/787.8a298b8f.chunk.js",
     "static/media/frank.ttf": "/izkor/static/media/frank.537369bf8c699772fc0c.ttf",
     "service-worker.js": "/izkor/service-worker.js",
@@ -13,11 +13,11 @@
     "static/media/Assistant-ExtraBold.ttf": "/izkor/static/media/Assistant-ExtraBold.1f1822d8cdb18832b9a3.ttf",
     "index.html": "/izkor/index.html",
     "main.c2ef0e47.css.map": "/izkor/static/css/main.c2ef0e47.css.map",
-    "main.2eafaf76.js.map": "/izkor/static/js/main.2eafaf76.js.map",
+    "main.5f97c011.js.map": "/izkor/static/js/main.5f97c011.js.map",
     "787.8a298b8f.chunk.js.map": "/izkor/static/js/787.8a298b8f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c2ef0e47.css",
-    "static/js/main.2eafaf76.js"
+    "static/js/main.5f97c011.js"
   ]
 }
