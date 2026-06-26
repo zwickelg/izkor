@@ -3,23 +3,25 @@ option,
 select {
   font-size: 1rem;
 }
+
 h2 {
   padding: 0;
   margin: 3px;
 }
+
 .all {
-  font-family: "Assistant";
   width: 100%;
   padding: 0px 20px;
   height: 85%;
   overflow: auto;
   /*   color: var(--text-color); */
 }
+
 section {
   direction: rtl;
 }
+
 .pagexxx {
-  font-family: "Assistant";
   width: 100%;
   padding: 0px 20px;
 
@@ -29,20 +31,59 @@ section {
 }
 
 .titleEnd {
+  font-family: "FrankRuehl";
   font-size: 2rem;
   text-align: center;
   padding-top: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
+
 .text {
-  font-size: 1.5rem;
-  line-height: 2.5rem;
+  font-family: "FrankRuehl";
+  font-size: var(--prayer-font-size, 2rem);
+  line-height: calc(var(--prayer-font-size, 2rem) * 1.25);
   letter-spacing: 1px;
+  text-align: right !important;
+  font-weight: 300;
+  margin-top: 0.75rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
+
 .instructions {
-  font-size: 1rem;
+  font-family: "Assistant", sans-serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color, #8c9eff);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
+
+.instructions + .instructions,
+.instructions + p.instructions,
+div:has(> .instructions) + .instructions {
+  margin-top: 0.5rem;
+}
+
 .firstChar {
-  font-size: 2rem;
+  font-family: "FrankRuehl";
+  font-size: calc(var(--prayer-font-size, 2rem) * 1.75);
+  font-weight: bold;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .button {
@@ -77,6 +118,7 @@ section {
   border-radius: 4px;
   height: 200px;
 }
+
 .shareButtons {
   display: flex;
   flex-direction: row;
@@ -84,6 +126,7 @@ section {
   width: 200px;
   padding: 10px;
 }
+
 .shareButtonsReadOnly {
   display: flex;
   flex-direction: row;
@@ -91,6 +134,7 @@ section {
   width: 150px;
   padding: 10px;
 }
+
 .shareButton {
   border: none;
   border-radius: 4px;
@@ -101,6 +145,7 @@ section {
   fill: currentColor;
   align-content: center;
 }
+
 .shareButtonCopy {
   background-color: white;
   border-radius: 6px;
@@ -115,6 +160,7 @@ section {
 .shareButton img {
   width: 34px;
 }
+
 .paginationDiv {
   display: flex;
   flex-direction: row;

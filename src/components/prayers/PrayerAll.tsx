@@ -1,11 +1,11 @@
 // src/pages/DetailsPage.tsx
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, IconButton, Typography, Paper } from "@mui/material";
+import { Box, IconButton, Typography, Paper, Divider } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-import PrayerStartN from "./PrayerStartN";
+import PrayerStart from "./PrayerStart";
 import PrayerThilimLG from "./PrayerThilimLG";
 import PrayerThilimTZ from "./PrayerThilimTZ";
 import PrayerThilimYZ from "./PrayerThilimYZ";
@@ -31,8 +31,8 @@ const PrayerAll: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const sectionRefs: SectionRefsArray = [
-    { ref: useRef<HTMLDivElement>(null), name: "Section 0", comp: PrayerStartN },
-    { ref: useRef<HTMLDivElement>(null), name: "", comp: PrayerStartN },
+    { ref: useRef<HTMLDivElement>(null), name: "Section 0", comp: PrayerStart },
+    { ref: useRef<HTMLDivElement>(null), name: "", comp: PrayerStart },
     { ref: useRef<HTMLDivElement>(null), name: `תהילים ל"ג`, comp: PrayerThilimLG },
     { ref: useRef<HTMLDivElement>(null), name: `תהילים ט"ז`, comp: PrayerThilimTZ },
     { ref: useRef<HTMLDivElement>(null), name: 'תהילים י"ז', comp: PrayerThilimYZ },
@@ -48,12 +48,23 @@ const PrayerAll: React.FC = () => {
   ];
 
   const handleScrollx = () => {
-    console.log(currentSection);
-    for (var i = 1; i < sectionRefs.length; i++) {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // If we are at the very bottom, activate the last section
+    if (Math.ceil(container.scrollTop + container.clientHeight) >= container.scrollHeight - 10) {
+      setCurrentSection(sectionRefs.length - 1);
+      return;
+    }
+
+    const containerTop = container.getBoundingClientRect().top;
+    const threshold = containerTop + 90; // 90px buffer to account for fixed header (80px padding)
+
+    for (let i = 1; i < sectionRefs.length; i++) {
       let curSectionRef = sectionRefs[i].ref ? sectionRefs[i].ref!.current : null;
       if (curSectionRef) {
         const rect = curSectionRef.getBoundingClientRect();
-        if (rect.top >= 0) {
+        if (rect.bottom > threshold) {
           setCurrentSection(i);
           break;
         }
@@ -93,7 +104,7 @@ const PrayerAll: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "100vh",
+        height: "100dvh",
         overflow: "hidden",
         position: "relative",
       }}
@@ -106,12 +117,25 @@ const PrayerAll: React.FC = () => {
           overflowY: "auto",
           overflowX: "hidden",
           px: 3,
-          pb: 15, // Padding for bottom navigation
+          pt: 10,
+          pb: 20, // Padding for bottom navigation
         }}
       >
         {sectionRefs.map(({ ref, name, comp: Comp, compAttributes }, index) =>
           index > 0 ? (
-            <Box key={index} ref={ref}>
+            <Box key={index} ref={ref} sx={{ scrollMarginTop: "90px" }}>
+              {index > 1 && (
+                <Divider
+                  sx={{
+                    my: 4,
+                    borderColor: "divider",
+                    borderWidth: "1px",
+                    width: "80%",
+                    mx: "auto",
+                    opacity: 0.6,
+                  }}
+                />
+              )}
               <section id={String(index)}>
                 <Comp {...compAttributes} />
               </section>
@@ -127,11 +151,11 @@ const PrayerAll: React.FC = () => {
         elevation={8}
         sx={{
           position: "fixed",
-          bottom: 16,
+          bottom: 8,
           left: "50%",
           transform: "translateX(-50%)",
           width: "auto",
-          minWidth: "300px",
+          minWidth: "350px",
           maxWidth: "400px",
           display: "flex",
           justifyContent: "space-between",
@@ -160,8 +184,8 @@ const PrayerAll: React.FC = () => {
         <Typography
           variant="h6"
           sx={{
-            fontFamily: "FrankRuehl, serif",
-            fontWeight: "bold",
+            fontFamily: "FrankRuehl, sans-serif",
+            fontWeight: "normal",
             color: "primary.main",
             textAlign: "center",
             flex: 1,

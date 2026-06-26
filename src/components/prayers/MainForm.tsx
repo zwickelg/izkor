@@ -138,24 +138,25 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     newGender: any
   ) => {
-    dispatch(setGender(newGender as "male" | "female"));
+    if (newGender !== null) {
+      dispatch(setGender(newGender as "male" | "female"));
+    }
   };
   const handleVersion = (
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     newGender: any
   ) => {
-    dispatch(setVersion(newGender as "sephardic" | "ashkenazic"));
+    if (newGender !== null) {
+      dispatch(setVersion(newGender as "sephardic" | "ashkenazic"));
+    }
   };
   return (
-    <Container maxWidth="sm" sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", py: 2 }}>
-      <Stack spacing={1} sx={{ my: "auto" }}>
+    <Container maxWidth="sm" sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column", pt: 10, pb: 12 }}>
+      <Stack spacing={1} sx={{ flexGrow: 1 }}>
         <Fade in={true} timeout={1000}>
           <Box sx={{ textAlign: "center" }}>
-            <Typography variant="h3" component="h1" gutterBottom color="primary.main" sx={{ fontFamily: 'FrankRuehl, serif', fontWeight: 'bold', textShadow: "0px 4px 12px rgba(0,0,0,0.3)" }}>
+            <Typography variant="h3" component="h1" gutterBottom sx={{ color: '#ffffff', fontWeight: 'normal', letterSpacing: '8px', textShadow: "0px 4px 12px rgba(0,0,0,0.3)" }}>
               פרטי המנוח
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              אנא מלא את הפרטים הבאים
             </Typography>
           </Box>
         </Fade>
@@ -171,30 +172,39 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
               overflow: "visible"
             }}
           >
-            <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-
-              <TextField
-                label="שם פרטי"
-                required
-                fullWidth
-                variant="outlined"
-                value={formData.firstName}
-                onChange={handleChange}
-                inputRef={inputRef}
-                error={Boolean(validationErrors.firstName)}
-                helperText={validationErrors.firstName}
-              />
-
-              <TextField
-                label="שם משפחה"
-                fullWidth
-                variant="outlined"
-                value={formData.lastName}
-                onChange={(e) => dispatch(setLastName(e.target.value))}
-              />
+            <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2.0 }}>
+              <Box>
+                <Typography variant="body2" sx={{ color: '#ffffff', mb: 0.5, fontWeight: 600 }}>
+                  שם פרטי
+                </Typography>
+                <TextField
+                  required
+                  fullWidth
+                  variant="outlined"
+                  className="gray-gradient-input"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  inputRef={inputRef}
+                  error={Boolean(validationErrors.firstName)}
+                  helperText={validationErrors.firstName}
+                />
+              </Box>
 
               <Box>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
+                <Typography variant="body2" sx={{ color: '#ffffff', mb: 0.5, fontWeight: 600 }}>
+                  שם משפחה
+                </Typography>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  className="gray-gradient-input"
+                  value={formData.lastName}
+                  onChange={(e) => dispatch(setLastName(e.target.value))}
+                />
+              </Box>
+
+              <Box>
+                <Typography variant="body2" color='#ffffff' gutterBottom>
                   לשון הפניה
                 </Typography>
                 <ToggleButtonGroup
@@ -221,7 +231,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
               </Box>
 
               <Box>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
+                <Typography variant="body2" color='#ffffff' gutterBottom>
                   נוסח
                 </Typography>
                 <ToggleButtonGroup
@@ -241,45 +251,65 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
                 </ToggleButtonGroup>
               </Box>
 
-              <TextField
-                label={
-                  formData.gender === "male" && formData.version === "ashkenazic"
+              <Box>
+                <Typography variant="body2" sx={{ color: '#ffffff', mb: 0.5, fontWeight: 600 }}>
+                  {formData.gender === "male" && formData.version === "ashkenazic"
                     ? "שם האב"
-                    : "שם האם"
-                }
-                fullWidth
-                variant="outlined"
-                value={formData.parentName}
-                onChange={(e) => dispatch(setParentName(e.target.value))}
-                InputLabelProps={{ shrink: true }}
-              />
-
-              <Button
-                variant="contained"
-                size="large"
-                fullWidth
-                onClick={handleNext}
-                sx={{
-                  mt: 2,
-                  py: 1.5,
-                  fontSize: "1.1rem",
-                  color: "white",
-                  borderRadius: "50px",
-                  background: "linear-gradient(45deg, #1a237e 30%, #534bae 90%)", // Rich gradient
-                  boxShadow: "0 3px 5px 2px rgba(26, 35, 126, .3)",
-                  "&:hover": {
-                    background: "linear-gradient(45deg, #000051 30%, #1a237e 90%)",
-                  }
-                }}
-                endIcon={<ArrowLeftIcon />}
-              >
-                המשך
-              </Button>
+                    : "שם האם"}
+                </Typography>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  className="gray-gradient-input"
+                  value={formData.parentName}
+                  onChange={(e) => dispatch(setParentName(e.target.value))}
+                />
+              </Box>
             </CardContent>
           </Card>
         </Grow>
+
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            p: 0,
+            zIndex: 1000,
+            background: "transparent"
+          }}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            fullWidth
+            onClick={handleNext}
+            sx={{
+              py: 2,
+              px: 4,
+              fontSize: "1.2rem",
+              fontWeight: 600,
+              color: "#000000",
+              borderRadius: 0, // Full width bottom bar
+              justifyContent: "flex-end",
+              background: "linear-gradient(270deg, rgba(255, 255, 255, 0) -0.18%, rgba(255, 255, 255, 0.9) 100.18%)",
+              boxShadow: "none",
+              "&:hover": {
+                background: "linear-gradient(270deg, rgba(255, 255, 255, 0.1) -0.18%, rgba(255, 255, 255, 1) 100.18%)",
+              },
+              "& .MuiButton-endIcon": {
+                color: "#000000",
+                marginLeft: 1
+              }
+            }}
+            endIcon={<ArrowLeftIcon sx={{ fontSize: '2.5rem !important' }} />}
+          >
+            המשך
+          </Button>
+        </Box>
       </Stack>
-    </Container>
+    </Container >
   );
 };
 

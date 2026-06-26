@@ -26,7 +26,7 @@ const stylesPdf = StyleSheet.create({
     flexDirection: "row",
     height: "100vh",
     justifyContent: "center",
-    fontFamily: "Assistant",
+    fontFamily: "FrankRuehl",
   },
 
   pageNum: {
@@ -68,7 +68,7 @@ const stylesPdf = StyleSheet.create({
   },
   text1: {
     fontSize: 20,
-    fontFamily: "Assistant",
+    fontFamily: "FrankRuehl",
     textAlign: "right",
     alignItems: "flex-end",
     margin: 0,
@@ -78,17 +78,17 @@ const stylesPdf = StyleSheet.create({
     letterSpacing: 0,
   },
   text2: {
-    fontFamily: "Assistant",
+    fontFamily: "FrankRuehl",
     textAlign: "right",
     letterSpacing: -0.1,
   },
   text3: {
-    fontFamily: "Assistant",
+    fontFamily: "FrankRuehl",
     textAlign: "right",
     letterSpacing: 0.1,
   },
   text4: {
-    fontFamily: "Assistant",
+    fontFamily: "FrankRuehl",
     textAlign: "right",
     letterSpacing: 0.1,
   },
@@ -192,8 +192,8 @@ const IzkorPdfDocument: React.FC = () => {
   console.log(JSON.stringify(formData));
   try {
     Font.register({
-      family: "Assistant",
-      src: "fonts/Assistant-Regular.ttf",
+      family: "FrankRuehl",
+      src: "fonts/frank.ttf",
     });
   } catch (err) {
     alert(err);

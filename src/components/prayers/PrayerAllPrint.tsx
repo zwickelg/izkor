@@ -9,7 +9,7 @@ import { decompressShortStringToJson } from "../utils/compressUtil";
 import { updateFields } from "../../features/izkor/izkorSlice";
 import styles from "./PrayersAllPrint.module.css";
 import "./PrayersAllPrint.css";
-import PrayerStartN from "./PrayerStartN";
+import PrayerStart from "./PrayerStart";
 import PrayerThilimLG from "./PrayerThilimLG";
 import PrayerThilimTZ from "./PrayerThilimTZ";
 import PrayerThilimYZ from "./PrayerThilimYZ";
@@ -27,6 +27,22 @@ const PrayerAllPrint: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
+  const handlePrint = () => {
+    try {
+      if (window.print) {
+        window.print();
+      } else {
+        alert("הדפסה אינה נתמכת בדפדפן זה. אנא נסה לפתוח בדפדפן אחר (כמו כרום).");
+      }
+    } catch (e) {
+      console.error("Print error:", e);
+    }
+  };
+
+  const handleClose = () => {
+    window.close();
+  };
+
   useEffect(() => {
     // Check both hash-based search and standard window search for robustness with HashRouter
     const searchParams = new URLSearchParams(location.search || window.location.search);
@@ -42,77 +58,94 @@ const PrayerAllPrint: React.FC = () => {
       }
     }
 
-    const handleAfterPrint = () => {
-      window.close();
-    };
-
-    window.addEventListener("afterprint", handleAfterPrint);
-
     // Give a small delay for state update and rendering before print
-    const timer = setTimeout(() => {
-      window.print();
-    }, 500);
+    // On mobile, we avoid auto-printing to prevent browser blocks
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
+      const timer = setTimeout(() => {
+        window.print();
+      }, 1000);
 
-    return () => {
-      window.removeEventListener("afterprint", handleAfterPrint);
-      clearTimeout(timer);
-    };
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [location.search, dispatch]);
+
+  // Determine which chapters to show
+  const showThilim = (chapter: string) => {
+    switch (chapter) {
+      case "LG": return <PrayerThilimLG />;
+      case "TZ": return <PrayerThilimTZ />;
+      case "YZ": return <PrayerThilimYZ />;
+      case "AB": return <PrayerThilimAB />;
+      case "ZA": return <PrayerThilimZA />;
+      case "KD": return <PrayerThilimKD />;
+      case "KL": return <PrayerThilimKL />;
+      default: return null;
+    }
+  };
+
+  const izkorData = useSelector((state: RootState) => state.izkor);
 
   return (
     <div className="scrollable-page">
-      <section id="0">
-        <PrayerEnd />
-      </section>
-      <section id="1">
-        <PrayerStartN />
-      </section>
+      <div className="print-actions no-print">
+        <button className="print-button" onClick={handlePrint} onTouchEnd={handlePrint}>הדפס</button>
+        <button onClick={handleClose}>סגור</button>
+      </div>
 
-      <section id="2">
-        <PrayerThilimLG />
-      </section>
+      <div className="no-print print-info-note">
+        אם כפתור ההדפסה לא מגיב, ניתן להשתמש בתפריט הדפדפן (שלוש נקודות) ובחירה ב"שתף" ואז "הדפס".
+      </div>
 
-      <section id="3">
-        <PrayerThilimTZ />
-      </section>
+      <div className="print-content">
+        <section className="print-section">
+          <PrayerStart />
+        </section>
 
-      <section id="4">
-        <PrayerThilimYZ />
-      </section>
+        <section className="print-section">
+          <PrayerThilimLG />
+        </section>
+        <section className="print-section">
+          <PrayerThilimTZ />
+        </section>
+        <section className="print-section">
+          <PrayerThilimYZ />
+        </section>
+        <section className="print-section">
+          <PrayerThilimAB />
+        </section>
+        <section className="print-section">
+          <PrayerThilimZA />
+        </section>
+        <section className="print-section">
+          <PrayerThilimKD />
+        </section>
+        <section className="print-section">
+          <PrayerThilimKL />
+        </section>
 
-      <section id="5">
-        <PrayerThilimAB />
-      </section>
+        <section className="print-section">
+          <PrayerName name={izkorData.firstName} />
+        </section>
 
-      <section id="6">
-        <PrayerThilimZA />
-      </section>
+        <section className="print-section">
+          <PrayerName name="נשמה" />
+        </section>
 
-      <section id="7">
-        <PrayerThilimKD />
-      </section>
+        <section className="print-section">
+          <PrayerKadhshYatom />
+        </section>
 
-      <section id="8">
-        <PrayerThilimKL />
-      </section>
+        <section className="print-section">
+          <PrayerElMaleRahamim />
+        </section>
 
-      <section id="9">
-        <PrayerName name="" />
-      </section>
-
-      <section id="10">
-        <PrayerName name="נשמה" />
-      </section>
-
-      <section id="11">
-        <PrayerKadhshYatom />
-      </section>
-
-      <section id="12">
-        <PrayerElMaleRahamim />
-      </section>
-
-      <PrayerEnd />
+        <section className="print-section">
+          <PrayerEnd />
+        </section>
+      </div>
     </div>
   );
 };

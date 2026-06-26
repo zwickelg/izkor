@@ -1,5 +1,6 @@
 .scrollable-page {
   height: 100vh;
+  min-height: 100%;
   overflow-y: scroll;
 }
 
@@ -15,8 +16,14 @@
     margin: 20mm;
   }
 
-  section {
+  .print-section {
     page-break-after: always;
+    page-break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  .print-section:last-child {
+    page-break-after: auto;
   }
 
   /* Reset some styles for printing */
@@ -32,6 +39,7 @@
   h6 {
     margin: 0;
     color: #000 !important;
+    background: transparent !important;
   }
 
   /* Adjust font size to fit A4 page */
@@ -40,4 +48,54 @@
     font-size: 12pt;
     color: #000 !important;
   }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+.print-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.print-actions button {
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-family: "Assistant", sans-serif;
+  transition: all 0.2s;
+}
+
+.print-actions button:hover {
+  background: #e9ecef;
+}
+
+.print-info-note {
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #666;
+  background: #fdfdfe;
+  border-bottom: 1px solid #eee;
+}
+
+.print-button {
+  background: #1a237e !important;
+  color: white !important;
+  border: none !important;
+}
+
+.print-button:hover {
+  background: #0d1440 !important;
 }

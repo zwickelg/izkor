@@ -1,7 +1,7 @@
 // src/pages/DetailsPage.tsx
 import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { RootState } from "../../app/store";
 import styles from "./Prayers.module.css";
 
@@ -11,72 +11,32 @@ export interface PrayerThilimPageProps {
 const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
   const topRef = useRef<HTMLDivElement | null>(null);
   const formData = useSelector((state: RootState) => state.izkor);
-  useEffect(() => {
-    if (topRef.current) {
-      console.log("aaa");
-      topRef.current.scrollIntoView({ behavior: "smooth" });
-    }
 
-    window.scrollTo(0, 0);
-  }, [name]);
 
   if (!name) name = formData.firstName;
+  /* Refactoring getLetterContent to use p tags and classes */
   const getLetterContent = (letter: string) => {
     switch (letter) {
       case "א":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               אַ
-            </Box>
+            </span>
             שְׁרֵי תְמִימֵי דֶרֶךְ הַהֹלְכִים בְּתוֹרת יְיָ: אַשְרֵי נצְרֵי
             עדֹתיו בְּכָל לֵב יִדְרְשוּהוּ: אַף לֹא פָּעֲלוּ עַוְלָה בִּדְרָכָיו
             הָלָכוּ: אַתָּה צִוִיתָה פִקֻדֶיךָ לִשְמֹר מְאֹד: אַחֲלַי יִכֹּנוּ
             דְרָכָי לִשְמֹר חֻקֶּיךָ: אָז לֹא אֵבוֹש בְּהַבִּיטִי אֶל כָּל
             מִצְוֹתֶיךָ: אוֹדְךָ בְּיֹשֶר לֵבָב בְּלָמְדִי מִשְפְּטֵי צִדְקֶךָ:
             אֶת חֻקֶּיךָ אֶשְמֹר אַל תַּעַזְבֵנִי עַד מְאֹד:
-          </Typography>
+          </p>
         );
       case "ב":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               בַּ
-            </Box>
+            </span>
             מֶה יְזַכֶּה נַּעַר אֶת אָרְחוֹ לִשְמֹר כְּדְבָרֶךָ: בְּכָל לִבִּי
             דְּרַשְתִיךָ אַל תַּשְגֵּנִי ממִצְוֹתֶיךָ: בְּלִבִּי צָפַנְתִי
             אִמְרָתֶךָ לְמַעַן לֹא אֶחְטָא לָךְ: בָּרוּךְ אַתָּה יְיָ לַמְּדֵנִי
@@ -84,31 +44,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             עֵדוֹתֶיךָ שָשְתִּי כְּעַל כָּל הוֹן: בְּפִקוּדֶיךָ אָשִיחָה
             וְאַבִּיטָה אֹרְחֹתֶיךָ: בְּחֻקֹּתֶיךָ אֶשְתַּעֲשָע לֹא אֶשְכַּח
             דְבָרֶךָ:
-          </Typography>
+          </p>
         );
       case "ג":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               גְּ
-            </Box>
+            </span>
             מֹל עַל עַבְדְּךָ אֶחְיֶה וְאֶשְמְרָה דְבָרֶךָ: גַּל עֵינַי
             וְאַבִּיטָה נִפְלָאוֹת מִתוֹרָתֶךָ: גֵּר אָנֹכִי בָּאָרֶץ ֹאַל
             תַּסְתֵּר מִמָּנִּי מִצְוֹתֶיךָ: גָּרְסָה נַפְשִי לְתַאֲבָה אֶל
@@ -116,32 +59,15 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             ממִצְוֹתֶיךָ: גַּל מֵעָלַי חֶרְפָּה וָבוּז כִּי עֵדֹתֶיךָ
             נָצָרְתִּי: גַּם יָשְבוּ שָרִים בִּי נִדְבָּרוּ עַבְדְּךָ יָשִיחַ
             בחֻקֶּיךָ: גַּם עֵדֹתֶיךָ שַעֲשֻעַי אַנְשֵי עֲצָתִי:
-          </Typography>
+          </p>
         );
 
       case "ד":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               דָּ
-            </Box>
+            </span>
             בְקָה לֶעָפָר נַפְשִי חַיֵּנִי כְּדְבָרֶךָ: דְרָכָי סִפַּרְתִּי
             וַתַּעֲנֵנִי לַמְּדֵנִי חֻקֶּיךָ: דֶּרֶךְ פִּקּוּדֶיךָ הֲבִינֵנִי
             וְאָשִיחָה בְּנִפְלְאוֹתֶיךָ: דָּלְפָה נַפְשִי מִתּוּגָה קַיְּמֵנִי
@@ -149,31 +75,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             דֶּרֶךְ אֱמוּנָה בָּחָרְתִּי מִשְפָּטֶיךָ שִוִּיתִי: דָּבַקְתִּי
             בְּעֵדוֹתֶיךָ יְיָ ֹאַל תְבִישֵנִי: דֶּרֶךְ מִצְוֹתֶיךָ אָרוּץ כִּי
             תַרְחִיב לִבִּי:
-          </Typography>
+          </p>
         );
       case "ה":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               ה
-            </Box>
+            </span>
             וֹרֵנִי יְיָ דֶּרֶךְ חֻקֶּיךָ וְאֶצֳּרֶנָּה עֵקֶב: הֲבִינֵנִי
             וְאֶצְּרָה תוֹרָתֶךָ וְאֶשְמְרֶנָּה בְּכָל לֵב: הַדְרִיכֵנִי
             בִּנְתִיב מִצְוֹתֶיךָ כִּי בוֹ חָפָצְתִּי: הַט לִבִּי אֶל עֵדוֹתֶיךָ
@@ -181,31 +90,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             חַיֵּנִי: הָקֵם לְעַבְדְּךָ אִמְרָתֶךָ אֲשֶר לְיִרְאָתֶךָ: הַעֲבֵר
             חֶרְפָּתִי אֲשֶר יָגֹרְתִּי כִּי מִשְפָּטֶיךָ טוֹבִים: הִנֵּה
             תָּאַבְתִּי לְפִּקֻּדֶיךָ בְּצִדְקָתְךָ חַיֵּנִי:
-          </Typography>
+          </p>
         );
       case "ו":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               וִ
-            </Box>
+            </span>
             יבֹאֻנִי חֲסָדֶךָ יְיָ תְשוּעָתְךָ כְּאִמְרָתֶךָ: וְאֶעֱנֶה חֹרְפִי
             דָבָר כִּי בָּטַחְתִּי בִּדְבָרֶךָ: וְאַל תַּצֵּל מִפִּי דָבָר אֱמֶת
             עַד מְאֹד כִּי לְמִשְפָּטֶךָ יִחָלְתִּי: וְאֶשְמְרָה תוֹרָתֶךָ
@@ -213,62 +105,28 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             דָרָשְתִּי: וַאֲדַבְּרָה בְּעֵדֹתֶיךָ נֶגֶד מְלָכִים וְלֹא אֵבוֹש:
             וְאֶשְתַּעֲשַע במִצְוֹתֶיךָ אֲשֶר אָהַבְתִּי: וְאֶשָּא כַּפַּי אֶל
             מִצְוֹתֶיךָ אֲשֶר אָהַבְתִּי וְאָשִיחָה בחֻקֶּיךָ:
-          </Typography>
+          </p>
         );
       case "ז":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               זְ
-            </Box>
-            כָר דָבָר לְעַבְדְּךָ עַל אֲשֶר יִחַלְתָּנִי: זֹאת נֶחָמָתִי בעניי
-            כִּי אִמְרָתֶךָ חִיָּתְנִי: זֵדִים הֱלִיצֻנִי עַד מְאֹד mתוֹרָתֶךָ
+            </span>
+            כָר דָבָר לְעַבְדְּךָ עַל אֲשֶר יִחַלְתָּנִי: זֹאת נֶחָמָתִי בְעָנְיִי
+            כִּי אִמְרָתֶךָ חִיָּתְנִי: זֵדִים הֱלִיצֻנִי עַד מְאֹד מִתּוֹרָתְךָ
             לֹא נָטִיתִי: זָכַרְתִּי מִשְפָּטֶיךָ מֵעוֹלָם יְיָ וָאֶתְנֶחָם:
             זַלְעָפָה אֲחָזַתְנִי מֵרְשָעִים עֹזְבֵי תוֹרָתֶךָ: זְמִרוֹת הָיוּ
             לִי חֻקֶּיךָ בְּבֵית מְגוּרָי: זָכַרְתִּי בַּלַּיְלָה שִמְךָ יְיָ
             וְאֶשְמְרָה תוֹרָתֶךָ: זֹאת הָיְתָה לִי כִּי פִקֻדֶיךָ נָצָרְתִּי:
-          </Typography>
+          </p>
         );
       case "ח":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               חֶַ
-            </Box>
+            </span>
             לְקִי יְיָ אָמַרְתִּי לִשְמֹר דְּבָרֶיךָ: חִלִּיתִי פָּנֶיךָ בְּכָל
             לֵב חָנֵּנִי כְּאִמְרָתֶךָ: חִשַּבְתִּי דְרָכָי וָאָשִיבָה רַגְלַי
             אֶל עֵדֹתֶיךָ: חַשְתִּי וְלֹא הִתְמַהְמָהְתִּי לִשְמֹר מִצְוֹתֶיךָ:
@@ -276,62 +134,28 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             אָקוּם לְהוֹדוֹת לָךְ עַל מִשְפְּטֵי צִדְקֶךָ: חָבֵר אָנִי לְכָל
             אֲשֶר יְרֵאוּךָ וּלְשֹמְרֵי פִּקּוּדֶיךָ: חֲסָדֶךָ יְיָ מָלְאָה
             הָאָרֶץ חֻקֶּיךָ לַמְּדֵנִי:
-          </Typography>
+          </p>
         );
       case "ט":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               ט
-            </Box>
+            </span>
             וֹב עָשִיתָ עִם עַבְדְּךָ יְיָ כִּדְבָרֶךָ: טוּב טַעַם וָדַעַת לַמְּדֵנִי
             כִּי במִצְוֹתֶיךָ הֶאֱמָנְתִּי: טֶרֶם אֶעֱנֶה אֲנִי שֹגֵג וְעַתָּה
             אִמְרָתְךָ שָמָרְתִּי: טוֹב אַתָּה וּמֵטִיב לַמְּדֵנִי חֻקֶּיךָ: טָפְלוּ
             עָלַי שֶקֶר זֵדִים אֲנִי בְּכָל לֵב אֶצֹּר פִּקּוּדֶיךָ: טָפַשׁ כַּחֵלֶב
             לִבָּם אֲנִי תוֹרָתְךָ שִעֲשָעְתִּי: טוֹב לִי כִּי עֻנֵּיתִי לְמַעַן
             אֶלְמַד חֻקֶּיךָ: טוֹב לִי תוֹרַת פִּיךָ מֵאַלְפֵי זָהָב וָכָסֶף:
-          </Typography>
+          </p>
         );
       case "י":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               יָ
-            </Box>
+            </span>
             דֶיךָ עָשׂוּנִי וַיְכוֹנְנוּנִי הֲבִינֵנִי וְאֶלְמְדָה מִצְוֹתֶיךָ:
             יְרֵאֶיךָ יִרְאוּנִי וְיִשְׂמָחוּ כִּי לִדְבָרְךָ יִחָלְתִּי: יָדַעְתִּי
             יְיָ כִּי צֶדֶק מִשְׁפָּטֶיךָ וֶאֱמוּנָה עִנִּיתָנִי: יְהִי נָא
@@ -340,31 +164,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             עִוְּתוּנִי אֲנִי אָשִׂיחַ בְּפִקּוּדֶיךָ: יָשׁוּבוּ לִי יְרֵאֶיךָ
             וידעי (וְיֹדְעֵי) עֵדֹתֶיךָ: יְהִי לִבִּי תָמִים בְּחֻקֶּיךָ לְמַעַן
             לֹא אֵבוֹשׁ:
-          </Typography>
+          </p>
         );
       case "כ":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               כָּ
-            </Box>
+            </span>
             לְתָה לדְמִי שביעית (לִתְשׁוּעָתְךָ) נַפְשִׁי לִדְבָרְךָ יִחָלְתִּי:
             כָּלוּ עֵינַי לְאִמְרָתֶךָ לֵאמֹר מָתַי תְּנַחֲמֵנִי: כִּי הָיִיתִי
             כְּנֹאד בְּקִיטוֹר חֻקֶּיךָ לֹא שָׁכָחְתִּי: כַּמָּה יְמֵי עַבְדֶּךָ
@@ -372,31 +179,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             אֲשֶׁר לֹא כְתוֹרָתֶךָ: כָּל מִצְוֹתֶיךָ אֱמוּנָה שֶׁקֶר רְדָפוּנִי
             עָזְרֵנִי: כִּמְעַט כִּלּוּנִי בָאָרֶץ וַאֲנִי לֹא עָזַבְתִּי פִּקּוּדֶיךָ:
             כְּחַסְדְּךָ חַיֵּנִי וְאֶשְׁמְרָה עֵדוּת פִּיךָ:
-          </Typography>
+          </p>
         );
       case "ל":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               לְ
-            </Box>
+            </span>
             עוֹלָם יְיָ דְּבָרְךָ נִצָּב בַּשָּׁמָיִם: לְדֹר וָדֹר אֱמוּנָתֶךָ
             כּוֹנַנְתָּ אֶרֶץ וַתַּעֲמֹד: לְמִשְׁפָּטֶיךָ עָמְדוּ הַיּוֹם כִּי
             הַכֹּל עֲבָדֶיךָ: לוּלֵי תוֹרָתְךָ שִׁעֲשֻׁעָי אָז אָבַדְתִּי בְעָנְיִי:
@@ -404,31 +194,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             הוֹשִׁיעֵנִי כִּי פִקּוּדֶיךָ דָרָשְׁתִּי: לִי קִוּוּ רְשָׁעִים לְאַבְּדֵנִי
             עֵדֹתֶיךָ אֶתְבּוֹנָן: לְכָל תִּכְלָה רָאִיתִי קֵץ רְחָבָה מִצְוָתְךָ
             מְאֹד:
-          </Typography>
+          </p>
         );
       case "מ":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               מָ
-            </Box>
+            </span>
             ה אָהַבְתִּי תוֹרָתֶךָ כָּל הַיּוֹם הִיא שִׂיחָתִי: מֵאיְבַי
             תְּחַכְּמֵנִי מִצְוֹתֶךָ כִּי לְעוֹלָם הִיא לִי: מִכָּל מְלַמְּדַי
             הִשְׂכַּלְתִּי כִּי עֵדְוֹתֶיךָ שִׂיחָה לִי: מִזְּקֵנִים אֶתְבּוֹנָן
@@ -436,31 +209,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             לְמַעַן אֶשְׁמֹר דְּבָרֶךָ: מִמִּשְׁפָּטֶיךָ לֹא סָרְתִּי כִּי אַתָּה
             הוֹרֵתָנִי: מַה נִּמְלְצוּ לְחִכִּי אִמְרָתֶךָ מִדְּבַשׁ לְפִי:
             מִפִּקּוּדֶיךָ אֶתְבּוֹנָן עַל כֵּן שָׂנֵאתִי כָּל אֹרַח שָׁקֶר:
-          </Typography>
+          </p>
         );
       case "נ":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               נֵ
-            </Box>
+            </span>
             ר לְרַגְלִי דְבָרֶךָ וְאוֹר לִנְתִיבָתִי: נִשְׁבַּעְתִּי וָאֲקַיֵּמָה
             לִשְׁמֹר מִשְׁפְּטֵי צִדְקֶךָ: נַעֲנֵיתִי עַד מְאֹד יְיָ חַיֵּנִי
             כִדְבָרֶךָ: נִדְבוֹת פִּי רְצֵה נָא יְיָ וּמִשְׁפָּטֶיךָ לַמְּדֵנִי:
@@ -468,31 +224,14 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             פַּח לִי וּמִפִּקּוּדֶיךָ לֹא תָעִיתִי: נָחַלְתִּי עֵדְוֹתֶיךָ
             לְעוֹלָם כִּי שְׂשׂוֹן לִבִּי הֵמָּה: נָטִיתִי לִבִּי לַעֲשׂוֹת
             חֻקֶּיךָ לְעוֹלָם עֵקֶב:
-          </Typography>
+          </p>
         );
       case "ס":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               סֵ
-            </Box>
+            </span>
             עֲפִים שָׂנֵאתִי וְתוֹרָתְךָ אָהָבְתִּי: סִתְרִי וּמָגִנִּי אָתָּה
             לִדְבָרְךָ יִחָלְתִּי: סוּרוּ מִמֶּנִּי מְרֵעִים וְאֶצְּרָה מִצְוֹת
             אֱלֹהָי: סָמְכֵנִי כְאִמְרָתְךָ וְאֶחְיֶה וְאַל תְּבִישֵׁנִי מִשִּׂבְרִי:
@@ -500,155 +239,70 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             שׁוֹגִים מֵחֻקֶּיךָ כִּי שֶׁקֶר תַּרְמִיתָם: סִגִּים הִשְׁבַּתָּ
             כָל רִשְׁעֵי אָרֶץ לָכֵן אָהַבְתִּי עֵדֹתֶיךָ: סָמַר מִפַּחְדְּךָ
             בְשָׂרִי וּמִמִּשְׁפָּטֶיךָ יָרֵאתִי:
-          </Typography>
+          </p>
         );
       case "ע":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               עָ
-            </Box>
+            </span>
             שִׂיתִי מִשְׁפָּט וָצֶדֶק בַּל תַּנִּיחֵנִי לְעֹשְׁקָי: עֲרֹב עַבְדְּךָ
             לְטוֹב אַל יַעַשְׁקֻנִי זֵדִים: עֵינַי כָּלוּ לִישׁוּעָתֶךָ וּלְאִמְרַת
             צִדְקֶךָ: עֲשֵׂה עִם עַבְדְּךָ כְחַסְדֶּךָ וְחֻקֶּיךָ לַמְּדֵנִי:
             עַבְדְּךָ אָנִי הֲבִינֵנִי וְאֵדְעָה עֵדֹתֶיךָ: עֵת לַעֲשׂוֹת לַיָי
             הֵפֵרוּ תוֹרָתֶךָ: עַל כֵּן אָהַבְתִּי מִצְוֹתֶיךָ מִזָּהָב וּמִפָּז:
             עַל כֵּן כָּל פִּקּוּדֵי כֹל יִשָּׁרְתִּי כָּל אֹרַח שֶׁקֶר שָׂנֵאתִי:
-          </Typography>
+          </p>
         );
       case "פ":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               פְּ
-            </Box>
+            </span>
             לָאוֹת עֵדוֹתֶיךָ עַל כֵּן נְצָרָתַם נַפְשִׁי: פֶּתַח דְּבָרֶיךָ יָאִיר
             מֵבִין פְּתָיִים: פִּי פָעַרְתִּי וָאֶשְׁאָפָה כִּי לְמִצְוֹתֶיךָ יָאָבְתִּי:
             פְּנֵה אֵלַי וְחָנֵּנִי כְּמִשְׁפָּט לְאֹהֲבֵי שְׁמֶךָ: פְּעָמַי הָכֵן
             בְּאִמְרָתֶךָ וְאַל תַּשְׁלֶט בִּי כָל אָוֶן: פְּדֵנִי מֵעֹשֶׁק אָדָם
             וְאֶשְׁמְרָה פִּקּוּדֶיךָ: פָּנֶיךָ הָאֵר בְּעַבְדֶּךָ וְלַמְּדֵנִי
             אֶת חֻקֶּיךָ: פַּלְגֵי מַיִם יָרְדוּ עֵינָי עַל לֹא שָׁמְרוּ תוֹרָתֶךָ:
-          </Typography>
+          </p>
         );
       case "צ":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               צַ
-            </Box>
+            </span>
             דִּיק אַתָּה יְיָ וְיָשָׁר מִשְׁפָּטֶיךָ: צִוִּיתָ צֶּדֶק עֵדֹתֶיךָ
             וֶאֱמוּנָה מְאֹד: צִמְּתַתְנִי קִנְאָתִי כִּי שָׁכְחוּ דְבָרֶיךָ
             צָרָי: צְרוּפָה אִמְרָתְךָ מְאֹד וְעַבְדְּךָ אֲהֵבָהּ: צָעִיר אָנֹכִי
             וְנִבְזֶה פִּקּוּדֶיךָ לֹא שָׁכָחְתִּי: צִדְקָתְךָ צֶּדֶק לְעוֹלָם
             וְתוֹרָתְךָ אֱמֶת: צָר וּמָצוֹק מְצָאוּנִי מִצְוֹתֶיךָ שִׁעֲשֻׁעָי:
             צֶדֶק עֵדְוֹתֶיךָ לְעוֹלָם הֲבִינֵנִי וְאֶחְיֶה:
-          </Typography>
+          </p>
         );
       case "ק":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               קָ
-            </Box>
+            </span>
             רָאתִי בְכָל לֵב עֲנֵנִי יְיָ חֻקֶּיךָ אֶצֹּרָה: קְרָאתִיךָ
             הוֹשִׁיעֵנִי וְאֶשְׁמְרָה עֵדֹתֶיךָ: קִדַּמְתִּי בַנֶּשֶׁף וָאֲשַׁוֵּעָה
             לִדְבָרְךָ יִחָלְתִּי: קִדְּמוּ עֵינַי אַשְׁמֻרוֹת לָשִׂיחַ בְּאִמְרָתֶךָ:
             קוֹלִי שִׁמְעָה כְחַסְדֶּךָ יְיָ כְּמִשְׁפָּטֶךָ חַיֵּנִי: קָרְבוּ
             רֹדְפֵי זִמָּה מִתּוֹרָתְךָ רָחָקוּ: קָרוֹב אַתָּה יְיָ וְכָל מִצְוֹתֶיךָ
             אֱמֶת: קֶדֶם יָדַעְתִּי מֵעֵדֹתֶיךָ כִּי לְעוֹלָם יְסַדְתָּם:
-          </Typography>
+          </p>
         );
       case "ר":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               רְ
-            </Box>
+            </span>
             אֵה עָנְיִי וְחַלְּצֵנִי כִּי תוֹרָתְךָ לֹא שָׁכָחְתִּי: רִיבָה רִיבִי
             וּגְאָלֵנִי לְאִמְרָתְךָ חַיֵּנִי: רָחוֹק מֵרְשָׁעִים יְשׁוּעָה כִּי חֻקֶּיךָ
             לֹא דָרָשׁוּ: רַחֲמֶיךָ רַבִּים יְיָ כְּמִשְׁפָּטֶיךָ חַיֵּנִי: רַבִּים
@@ -656,64 +310,30 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             אֲשֶׁר אִמְרָתְךָ לֹא שָׁמָרוּ: רְאֵה כִּי פִקּוּדֶיךָ אָהַבְתִּי יְיָ
             כְּחַסְדְּךָ חַיֵּנִי: רֹאשׁ דְּבָרְךָ אֱמֶת וּלְעוֹלָם כָּל מִשְׁפַּט
             צִדְקֶךָ:
-          </Typography>
+          </p>
         );
       case "ש":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               שָׂ
-            </Box>
-            רִים רְדָפוּנִי חִנָּם ומדבריך (וּמִדְּבָרְךָ) פָּחַד לִבִּי: שָׂשׂ
+            </span>
+            רִים רְדָפוּנִי חִנָּם וּמִדְּבָרְךָ פָּחַד לִבִּי: שָׂשׂ
             אָנֹכִי עַל אִמְרָתֶךָ כְּמוֹצֵא שָׁלָל רָב: שֶׁקֶר שָׂנֵאתִי וַאֲתַעֵבָה
             תוֹרָתְךָ אָהָבְתִּי: שֶׁבַע בַּיּוֹם הִלַּלְתִּיךָ עַל מִשְׁפְּטֵי
             צִדְקֶךָ: שָׁלוֹם רָב לְאֹהֲבֵי תוֹרָתֶךָ וְאֵין לָמוֹ מִכְשׁוֹל: שִׂבַּרְתִּי
             לִישׁוּעָתְךָ יְיָ וּמִצְוֹתֶיךָ עָשִׂיתִי: שָׁמְרָה נַפְשִׁי עֵדֹתֶיךָ
             וָאֹהֲבֵם מְאֹד: שָׁמַרְתִּי פִקּוּדֶיךָ וְעֵדֹתֶיךָ כִּי כָל דְּרָכַי
             נֶגְדֶּךָ:
-          </Typography>
+          </p>
         );
 
       case "ת":
         return (
-          <Typography
-            variant="h5"
-            sx={{
-              fontFamily: "FrankRuehl, serif",
-              lineHeight: 1.8,
-              textAlign: "justify",
-              mb: 2,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                lineHeight: 1,
-                verticalAlign: "middle",
-                ml: 1,
-              }}
-            >
+          <p className={styles.text}>
+            <span className={styles.firstChar}>
               תִּ
-            </Box>
+            </span>
             קְרַב רִנָּתִי לְפָנֶיךָ יְיָ כִּדְבָרְךָ הֲבִינֵנִי: תָּבוֹא תְּחִנָּתִי
             לְפָנֶיךָ כְּאִמְרָתְךָ הַצִּילֵנִי: תַּבַּעְנָה שְׂפָתַי תְּהִלָּה כִּי
             תְלַמְּדֵנִי חֻקֶּיךָ: תַּעַן לְשׁוֹנִי אִמְרָתֶךָ כִּי כָל מִצְוֹתֶיךָ
@@ -721,7 +341,7 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
             לִישׁוּעָתְךָ יְיָ וְתוֹרָתְךָ שִׁעֲשֻׁעָי: תִּחְיֶה נַפְשִׁי וּתְהַלְלֶךָּ
             וּמִשְׁפָּטֶךָ יַעְזְרֻנִי: תָּעִיתִי כְּשֶׂה אֹבֵד בַּקֵּשׁ עַבְדֶּךָ כִּי
             מִצְוֹתֶיךָ לֹא שָׁכָחְתִּי:
-          </Typography>
+          </p>
         );
       // Add more cases for other letters...
       default:
@@ -740,18 +360,9 @@ const PrayerName: React.FC<PrayerThilimPageProps> = ({ name }) => {
 
   return (
     <Box sx={{ py: 4, px: 2 }} ref={topRef}>
-      <Typography
-        variant="h3"
-        sx={{
-          fontFamily: "FrankRuehl, serif",
-          fontWeight: "bold",
-          textAlign: "center",
-          mb: 4,
-          color: "primary.main",
-        }}
-      >
+      <p className={styles.instructions}>
         {name === "נשמה" ? "אותיות נשמה" : "אותיות לפי שם"}
-      </Typography>
+      </p>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         {name.split("").map((letter, index) => (
           <Box key={index}>{getLetterContent(letter)}</Box>

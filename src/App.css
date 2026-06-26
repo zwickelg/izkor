@@ -9,9 +9,18 @@
 
 .toggle-color-mode {
   position: fixed;
-  top: 8px;
-  right: 8px;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 9999;
+  display: flex;
+  justify-content: flex-start;
+  background-color: var(--background-color-transparent, rgba(128, 128, 128, 0.8));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color-transparent, rgba(128, 128, 128, 0.2));
+  padding: 8px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 @media (prefers-reduced-motion: no-preference) {

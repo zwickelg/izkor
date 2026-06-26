@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Box, Typography } from "@mui/material";
+import styles from "./Prayers.module.css";
 
 const PrayerEnd: React.FC = () => {
   const formData = useSelector((state: RootState) => state.izkor);
@@ -18,27 +19,18 @@ const PrayerEnd: React.FC = () => {
         minHeight: "60vh",
       }}
     >
-      <Typography
-        variant="h3"
-        component="h2"
-        sx={{
-          fontFamily: "FrankRuehl, serif",
-          fontWeight: "bold",
-          mb: 3,
-          textAlign: "center",
-          color: "primary.main",
-        }}
-      >
+      <p className={styles.instructions}>
         {formData.firstName} {formData.lastName}
-      </Typography>
+      </p>
 
       <Typography
         variant="h4"
         sx={{
-          fontFamily: "FrankRuehl, serif",
-          fontWeight: "bold",
+          fontFamily: "FrankRuehl, sans-serif",
+          fontWeight: "normal",
           mb: 4,
           letterSpacing: 2,
+          fontSize: "3rem",
         }}
       >
         תנצב"ה
@@ -46,7 +38,7 @@ const PrayerEnd: React.FC = () => {
 
       <Box sx={{ mt: 2 }}>
         <img
-          src="images/Izkor.png"
+          src={`${process.env.PUBLIC_URL}/images/Izkor.png`}
           alt="יזכור"
           style={{
             maxWidth: "200px",

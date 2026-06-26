@@ -1,0 +1,21 @@
+
+[x] 1. Change the button in the main page to be bigger also in the app as in the readonly
+2. wrap to android app
+3. deploy to s3
+[x] 4. read only - the text should not be selectable.
+[x] 5. divider between the prayers.
+[x] 6. titles spaceing
+[x] 7.remove selectable text in the prayers texts
+[x] 8. titles in the bright background should change color
+9. change the A+ A- buttons to magnifying glass
+10. change the dark, bright mode buttons
+11. change the color of the name and mother/father name in the prayers
+12. round corners picture
+13. upload image
+14. add date and place of grave (maybe connect to waze)
+15. add link to download the application
+16. how to quit the app
+17. adjust the size of the screen to fit
+18. contrast in the start page
+19 when share with whats app, add the name of the deceased
+20 allow X usage or unlimited usagehttps://zwickelg.github.io/izkor/images/Izkor.png

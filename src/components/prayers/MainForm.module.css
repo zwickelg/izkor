@@ -3,7 +3,6 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  font-family: "Assistant";
   direction: rtl;
   text-align: right;
 }
@@ -101,7 +100,6 @@
 mainForm.Label span {
   color: var(--components-switch-slide-fill, #000);
   text-align: right;
-  font-family: Assistant;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
@@ -119,7 +117,6 @@ mainForm.Label span {
 .Title span {
   color: var(--common-white-main, #fff);
   text-align: center;
-  font-family: Assistant;
   font-size: 36px;
   font-style: normal;
   font-weight: 800;
