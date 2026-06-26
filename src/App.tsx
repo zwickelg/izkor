@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
-import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
+import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import Main from "./Main";
 import "./App.css";
 import { CacheProvider } from "@emotion/react";
@@ -55,10 +55,10 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
             {isPrayerPage && (
               <>
                 <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט" disabled={fontSize <= 1}>
-                  <ZoomOutIcon />
+                  <TextDecreaseIcon />
                 </IconButton>
                 <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט" disabled={fontSize >= 4}>
-                  <ZoomInIcon />
+                  <TextIncreaseIcon />
                 </IconButton>
               </>
             )}
