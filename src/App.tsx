@@ -46,10 +46,10 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
         {!isPrintPage && (
           <div className="toggle-color-mode" style={{ display: 'flex', alignItems: 'center' }}>
             <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט">
-              <ZoomInIcon />
+              <ZoomInIcon fontSize="large" />
             </IconButton>
             <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט">
-              <ZoomOutIcon />
+              <ZoomOutIcon fontSize="large" />
             </IconButton>
             <IconButton
               sx={{ ml: 1 }}
