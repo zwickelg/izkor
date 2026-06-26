@@ -195,10 +195,11 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleShareWithWhatsApp = () => {
-    console.log("handleShareWithWhatsApp compressedUrl " + compressedUrl);
     const shareableUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
+    const name = [formData.firstName, formData.lastName].filter(Boolean).join(" ");
+    const message = `תפילות לעילוי נשמת ${name} ז״ל\n${shareableUrl}`;
     window.open(
-      `https://api.whatsapp.com/send?text=${encodeURIComponent(shareableUrl)}`,
+      `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`,
       "_blank",
     );
   };
