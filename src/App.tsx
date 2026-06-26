@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
-import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import Main from "./Main";
 import "./App.css";
 import { CacheProvider } from "@emotion/react";
@@ -16,7 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
-function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, increaseFont: () => void, decreaseFont: () => void }) {
+function MyApp() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
   const isPrintPage = window.location.hash.includes("/print") || window.location.href.includes("/print");
@@ -35,7 +33,6 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
           padding: 0,
           margin: 0,
           color: "text.primary",
-          "--prayer-font-size": `${fontSize}rem`,
           "--primary-color": theme.palette.primary.main,
           background:
             theme.palette.mode === "dark"
@@ -45,14 +42,7 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
       >
         {!isPrintPage && (
           <div className="toggle-color-mode" style={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט">
-              <ZoomInIcon fontSize="large" />
-            </IconButton>
-            <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט">
-              <ZoomOutIcon fontSize="large" />
-            </IconButton>
             <IconButton
-              sx={{ ml: 1 }}
               onClick={colorMode.toggleColorMode}
               color="inherit"
             >
@@ -72,10 +62,6 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
 
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("dark");
-  const [fontSize, setFontSize] = React.useState<number>(2); // Default 2rem
-
-  const increaseFont = () => setFontSize(prev => Math.min(prev + 0.25, 4));
-  const decreaseFont = () => setFontSize(prev => Math.max(prev - 0.25, 1));
 
   // Force light mode for printing
   // Use a more robust check that handles both initial load and subsequent navigation
@@ -199,7 +185,7 @@ export default function ToggleColorMode() {
     <ColorModeContext.Provider value={colorMode}>
       <CacheProvider value={cacheRtl}>
         <ThemeProvider theme={theme}>
-          <MyApp fontSize={fontSize} increaseFont={increaseFont} decreaseFont={decreaseFont} />
+          <MyApp />
         </ThemeProvider>
       </CacheProvider>
     </ColorModeContext.Provider>
