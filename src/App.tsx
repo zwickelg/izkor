@@ -7,6 +7,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SearchIcon from "@mui/icons-material/Search";
 import Main from "./Main";
 import "./App.css";
+import { useLocation } from "react-router-dom";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { prefixer } from "stylis";
@@ -30,14 +31,9 @@ const FontZoomIcon = ({ sign }: { sign: "+" | "−" }) => (
 function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, increaseFont: () => void, decreaseFont: () => void }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const [currentHash, setCurrentHash] = React.useState(window.location.hash);
-  React.useEffect(() => {
-    const onHashChange = () => setCurrentHash(window.location.hash);
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
-  const isPrintPage = currentHash.includes("/print");
-  const isPrayerPage = currentHash.includes("/page2");
+  const location = useLocation();
+  const isPrintPage = location.pathname === "/print";
+  const isPrayerPage = location.pathname === "/page2";
   const formData = useSelector((state: RootState) => state.izkor);
 
   return (
