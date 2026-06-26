@@ -11,7 +11,6 @@ import { registerShareDialog, unregisterShareDialog } from "../../shareDialogBri
 import IconButton from "@mui/material/IconButton";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import TapAndPlayIcon from "@mui/icons-material/TapAndPlay";
 import {
   Container,
@@ -318,18 +317,10 @@ const PrayerDetails: React.FC = () => {
             onClick={() => { handlePrint(); setShareOpen(false); }}
           />
           <ShareOption
-            icon={<DirectionsIcon />}
-            label="Waze"
-            color="#00CAFF"
-            onClick={() => { handleShareWithWaze(); setShareOpen(false); }}
+            icon={<TapAndPlayIcon />}
+            label="NFC"
+            onClick={() => { handleNfcClick(); setShareOpen(false); }}
           />
-          {formData.mode !== "readonly" && (
-            <ShareOption
-              icon={<TapAndPlayIcon />}
-              label="NFC"
-              onClick={() => { handleNfcClick(); setShareOpen(false); }}
-            />
-          )}
         </Stack>
       </Drawer>
     </Container>
