@@ -4,7 +4,8 @@ import Box from "@mui/material/Box";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Typography from "@mui/material/Typography";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import Main from "./Main";
 import "./App.css";
 import { CacheProvider } from "@emotion/react";
@@ -45,10 +46,10 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
         {!isPrintPage && (
           <div className="toggle-color-mode" style={{ display: 'flex', alignItems: 'center' }}>
             <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט">
-              <Typography variant="h6" sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>A+</Typography>
+              <ZoomInIcon />
             </IconButton>
             <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט">
-              <Typography variant="h6" sx={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}>A-</Typography>
+              <ZoomOutIcon />
             </IconButton>
             <IconButton
               sx={{ ml: 1 }}
