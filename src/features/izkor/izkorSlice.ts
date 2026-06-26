@@ -8,6 +8,7 @@ interface IzkorState {
   parentName: string;
   version: "sephardic" | "ashkenazic";
   mode: "readonly" | "all";
+  deathDate: string;
 }
 
 const initialState: IzkorState = {
@@ -18,6 +19,7 @@ const initialState: IzkorState = {
   parentName: "",
   version: "ashkenazic",
   mode: "all",
+  deathDate: "",
 };
 
 export const izkorSlice = createSlice({
@@ -45,6 +47,9 @@ export const izkorSlice = createSlice({
     setVersion: (state, action: PayloadAction<"sephardic" | "ashkenazic">) => {
       state.version = action.payload;
     },
+    setDeathDate: (state, action: PayloadAction<string>) => {
+      state.deathDate = action.payload;
+    },
     updateFields: (state, action: PayloadAction<Partial<IzkorState>>) => {
       state.mode = "readonly";
       Object.assign(state, action.payload);
@@ -59,6 +64,7 @@ export const {
   setGender,
   setParentName,
   setVersion,
+  setDeathDate,
   updateFields,
 } = izkorSlice.actions;
 

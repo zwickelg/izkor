@@ -8,6 +8,7 @@ import { handleWriteUrl } from "../utils/NfcHandler";
 import { compressJsonToShortString } from "../utils/compressUtil";
 import * as clipboard from "clipboard-polyfill";
 import { registerShareDialog, unregisterShareDialog } from "../../shareDialogBridge";
+import { formatHebrewDate } from "../utils/hebrewDate";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
@@ -26,6 +27,13 @@ import {
 } from "@mui/material";
 
 const baseUrl = "https://zwickelg.github.io/izkor";
+
+const formatDeathDate = (dateString: string): string => {
+  if (!dateString) return "";
+  const gregorian = new Date(dateString + "T00:00:00").toLocaleDateString("he-IL");
+  const hebrew = formatHebrewDate(dateString);
+  return hebrew ? `${gregorian}  /  ${hebrew}` : gregorian;
+};
 
 const ShareOption = ({ icon, label, color, onClick }: { icon: React.ReactNode; label: string; color?: string; onClick: () => void }) => (
   <Box sx={{ textAlign: "center", cursor: "pointer", minWidth: 64 }} onClick={onClick}>
@@ -275,6 +283,9 @@ const PrayerDetails: React.FC = () => {
                   label="גירסה"
                   value={formData.version === "sephardic" ? "ספרד" : "אשכנז"}
                 />
+                {formData.deathDate && (
+                  <DetailRow label="תאריך פטירה" value={formatDeathDate(formData.deathDate)} />
+                )}
               </Stack>
 
             </CardContent>

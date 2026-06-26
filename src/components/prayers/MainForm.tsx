@@ -10,6 +10,7 @@ import {
   setGender,
   setParentName,
   setVersion,
+  setDeathDate,
   updateFields,
 } from "../../features/izkor/izkorSlice";
 import {
@@ -24,8 +25,12 @@ import {
   Stack,
   Button,
   Fade,
-  Grow
+  Grow,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
+import { HEBREW_MONTHS, getHebrewDateParts, parseHebrewDay, parseHebrewYear, hebrewToGregorianISO } from "../utils/hebrewDate";
 import WomanIcon from "@mui/icons-material/Woman";
 import ManIcon from "@mui/icons-material/Man";
 import { RootState } from "../../app/store";
@@ -43,12 +48,34 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Step 2: Add validation state
-  const [validationErrors, setValidationErrors] = useState({
-    firstName: "",
-    err: "",
-    // ... add other fields here
-  });
+  const [validationErrors, setValidationErrors] = useState({ firstName: "", err: "" });
+  const [dateMode, setDateMode] = useState<"gregorian" | "hebrew">("gregorian");
+  const [hebrewDay, setHebrewDay] = useState("");
+  const [hebrewMonth, setHebrewMonth] = useState(7);
+  const [hebrewYear, setHebrewYear] = useState("");
+  const [hebrewErrors, setHebrewErrors] = useState({ day: "", year: "" });
+
+  const handleDateModeChange = (_: React.MouseEvent, mode: "gregorian" | "hebrew") => {
+    if (!mode) return;
+    if (mode === "hebrew" && formData.deathDate) {
+      const parts = getHebrewDateParts(formData.deathDate);
+      if (parts) { setHebrewDay(parts.day); setHebrewMonth(parts.month); setHebrewYear(parts.year); }
+    }
+    setDateMode(mode);
+  };
+
+  const tryUpdateFromHebrew = (day: string, month: number, year: string) => {
+    const errors = { day: "", year: "" };
+    const dayNum = day ? parseHebrewDay(day) : null;
+    const yearNum = year ? parseHebrewYear(year) : null;
+    if (day && dayNum === null) errors.day = "ערך לא חוקי (א–ל)";
+    if (year && yearNum === null) errors.year = "ערך לא חוקי";
+    setHebrewErrors(errors);
+    if (dayNum && yearNum && !errors.day && !errors.year) {
+      const iso = hebrewToGregorianISO(dayNum, month, yearNum);
+      if (iso) dispatch(setDeathDate(iso));
+    }
+  };
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -71,6 +98,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
             gender: izkor.gender,
             parentName: izkor.parentName,
             version: izkor.version,
+            deathDate: izkor.deathDate ?? "",
           })
         );
         navigate("/page1");
@@ -264,6 +292,64 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
                   value={formData.parentName}
                   onChange={(e) => dispatch(setParentName(e.target.value))}
                 />
+              </Box>
+
+              <Box>
+                <Typography variant="body2" sx={{ color: '#ffffff', mb: 0.5, fontWeight: 600 }}>
+                  תאריך פטירה
+                </Typography>
+                <ToggleButtonGroup
+                  value={dateMode} exclusive onChange={handleDateModeChange}
+                  fullWidth size="small" sx={{ mb: 1 }}
+                >
+                  <ToggleButton value="gregorian">לועזי</ToggleButton>
+                  <ToggleButton value="hebrew">עברי</ToggleButton>
+                </ToggleButtonGroup>
+
+                {dateMode === "gregorian" ? (
+                  <TextField
+                    fullWidth variant="outlined" type="date"
+                    className="gray-gradient-input"
+                    value={formData.deathDate}
+                    onChange={(e) => dispatch(setDeathDate(e.target.value))}
+                    inputProps={{ dir: "ltr" }}
+                  />
+                ) : (
+                  <Stack direction="row" spacing={1} alignItems="flex-start">
+                    <TextField
+                      label="יום" size="small"
+                      className="gray-gradient-input"
+                      value={hebrewDay}
+                      onChange={(e) => { setHebrewDay(e.target.value); tryUpdateFromHebrew(e.target.value, hebrewMonth, hebrewYear); }}
+                      placeholder="כ״ב"
+                      error={!!hebrewErrors.day}
+                      helperText={hebrewErrors.day || " "}
+                      inputProps={{ dir: "rtl", maxLength: 6 }}
+                      sx={{ width: "28%" }}
+                    />
+                    <FormControl size="small" sx={{ width: "42%" }}>
+                      <Select
+                        value={hebrewMonth}
+                        onChange={(e) => { setHebrewMonth(Number(e.target.value)); tryUpdateFromHebrew(hebrewDay, Number(e.target.value), hebrewYear); }}
+                      >
+                        {HEBREW_MONTHS.map(m => (
+                          <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      label="שנה" size="small"
+                      className="gray-gradient-input"
+                      value={hebrewYear}
+                      onChange={(e) => { setHebrewYear(e.target.value); tryUpdateFromHebrew(hebrewDay, hebrewMonth, e.target.value); }}
+                      placeholder='תשמ"ב'
+                      error={!!hebrewErrors.year}
+                      helperText={hebrewErrors.year || " "}
+                      inputProps={{ dir: "rtl", maxLength: 10 }}
+                      sx={{ width: "30%" }}
+                    />
+                  </Stack>
+                )}
               </Box>
             </CardContent>
           </Card>

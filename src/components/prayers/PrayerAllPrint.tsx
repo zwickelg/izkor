@@ -7,6 +7,7 @@ import { RootState } from "../../app/store";
 import { useNavigate, useLocation } from "react-router-dom";
 import { decompressShortStringToJson } from "../utils/compressUtil";
 import { updateFields } from "../../features/izkor/izkorSlice";
+import { formatHebrewDate } from "../utils/hebrewDate";
 import styles from "./PrayersAllPrint.module.css";
 import "./PrayersAllPrint.css";
 import PrayerStart from "./PrayerStart";
@@ -100,6 +101,40 @@ const PrayerAllPrint: React.FC = () => {
       </div>
 
       <div className="print-content">
+        {/* Cover page */}
+        <section className="print-section print-cover">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/Izkor.png`}
+            alt="יזכור"
+            className="print-cover-image"
+          />
+          <h1 className="print-cover-title">יזכור</h1>
+          <div className="print-cover-details">
+            <div className="print-details-row">
+              <span className="print-details-label">שם:</span>
+              <span>{izkorData.firstName} {izkorData.lastName}</span>
+            </div>
+            {izkorData.parentName && (
+              <div className="print-details-row">
+                <span className="print-details-label">
+                  {izkorData.gender === "male" && izkorData.version === "ashkenazic" ? "שם האב:" : "שם האם:"}
+                </span>
+                <span>{izkorData.parentName}</span>
+              </div>
+            )}
+            {izkorData.deathDate && (
+              <div className="print-details-row">
+                <span className="print-details-label">תאריך פטירה:</span>
+                <span>
+                  {new Date(izkorData.deathDate + "T00:00:00").toLocaleDateString("he-IL")}
+                  {" / "}
+                  {formatHebrewDate(izkorData.deathDate)}
+                </span>
+              </div>
+            )}
+          </div>
+        </section>
+
         <section className="print-section">
           <PrayerStart />
         </section>
