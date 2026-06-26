@@ -5,7 +5,9 @@ import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import SearchIcon from "@mui/icons-material/Search";
+import ShareIcon from "@mui/icons-material/Share";
 import Main from "./Main";
+import { triggerShareDialog } from "./shareDialogBridge";
 import "./App.css";
 import { useLocation } from "react-router-dom";
 import { CacheProvider } from "@emotion/react";
@@ -34,6 +36,7 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
   const location = useLocation();
   const isPrintPage = location.pathname === "/print";
   const isPrayerPage = location.pathname === "/page2";
+  const isDetailsPage = location.pathname === "/page1";
   const formData = useSelector((state: RootState) => state.izkor);
 
   return (
@@ -68,6 +71,11 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
                   <FontZoomIcon sign="+" />
                 </IconButton>
               </>
+            )}
+            {isDetailsPage && (
+              <IconButton onClick={triggerShareDialog} color="inherit" title="שיתוף">
+                <ShareIcon />
+              </IconButton>
             )}
             <IconButton onClick={colorMode.toggleColorMode} color="inherit">
               {theme.palette.mode === "dark" ? (
