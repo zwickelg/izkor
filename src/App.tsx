@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import Main from "./Main";
 import "./App.css";
 import { CacheProvider } from "@emotion/react";
@@ -14,10 +16,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
-function MyApp() {
+function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, increaseFont: () => void, decreaseFont: () => void }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
-  const isPrintPage = window.location.hash.includes("/print") || window.location.href.includes("/print");
+  const [currentHash, setCurrentHash] = React.useState(window.location.hash);
+  React.useEffect(() => {
+    const onHashChange = () => setCurrentHash(window.location.hash);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+  const isPrintPage = currentHash.includes("/print");
+  const isPrayerPage = currentHash.includes("/page2");
   const formData = useSelector((state: RootState) => state.izkor);
 
   return (
@@ -33,6 +42,7 @@ function MyApp() {
           padding: 0,
           margin: 0,
           color: "text.primary",
+          "--prayer-font-size": `${fontSize}rem`,
           "--primary-color": theme.palette.primary.main,
           background:
             theme.palette.mode === "dark"
@@ -42,10 +52,17 @@ function MyApp() {
       >
         {!isPrintPage && (
           <div className="toggle-color-mode" style={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              onClick={colorMode.toggleColorMode}
-              color="inherit"
-            >
+            {isPrayerPage && (
+              <>
+                <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט" disabled={fontSize <= 1}>
+                  <ZoomOutIcon />
+                </IconButton>
+                <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט" disabled={fontSize >= 4}>
+                  <ZoomInIcon />
+                </IconButton>
+              </>
+            )}
+            <IconButton onClick={colorMode.toggleColorMode} color="inherit">
               {theme.palette.mode === "dark" ? (
                 <Brightness7Icon />
               ) : (
@@ -62,6 +79,9 @@ function MyApp() {
 
 export default function ToggleColorMode() {
   const [mode, setMode] = React.useState<"light" | "dark">("dark");
+  const [fontSize, setFontSize] = React.useState<number>(2);
+  const increaseFont = () => setFontSize(prev => Math.min(prev + 0.25, 4));
+  const decreaseFont = () => setFontSize(prev => Math.max(prev - 0.25, 1));
 
   // Force light mode for printing
   // Use a more robust check that handles both initial load and subsequent navigation
@@ -185,7 +205,7 @@ export default function ToggleColorMode() {
     <ColorModeContext.Provider value={colorMode}>
       <CacheProvider value={cacheRtl}>
         <ThemeProvider theme={theme}>
-          <MyApp />
+          <MyApp fontSize={fontSize} increaseFont={increaseFont} decreaseFont={decreaseFont} />
         </ThemeProvider>
       </CacheProvider>
     </ColorModeContext.Provider>

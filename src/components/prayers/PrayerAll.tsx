@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, IconButton, Typography, Paper, Divider } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ZoomInIcon from "@mui/icons-material/ZoomIn";
-import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+
 
 import PrayerStart from "./PrayerStart";
 import PrayerThilimLG from "./PrayerThilimLG";
@@ -75,9 +74,6 @@ const PrayerAll: React.FC = () => {
   };
 
   const [currentSection, setCurrentSection] = useState<number>(1);
-  const [fontSize, setFontSize] = useState<number>(2);
-  const increaseFont = () => setFontSize(prev => Math.min(prev + 0.25, 4));
-  const decreaseFont = () => setFontSize(prev => Math.max(prev - 0.25, 1));
 
   const goToSection = (sectionId: number) => {
     if (sectionId > 0 && sectionId < sectionRefs.length) {
@@ -112,7 +108,6 @@ const PrayerAll: React.FC = () => {
         height: "100dvh",
         overflow: "hidden",
         position: "relative",
-        "--prayer-font-size": `${fontSize}rem`,
       }}
     >
       {/* Scrollable Content */}
@@ -212,26 +207,6 @@ const PrayerAll: React.FC = () => {
           <ArrowLeftIcon />
         </IconButton>
 
-        <Divider orientation="vertical" flexItem sx={{ mx: 0.5, my: 1 }} />
-
-        <IconButton
-          size="small"
-          onClick={decreaseFont}
-          disabled={fontSize <= 1}
-          color="inherit"
-          title="הקטן טקסט"
-        >
-          <ZoomOutIcon />
-        </IconButton>
-        <IconButton
-          size="small"
-          onClick={increaseFont}
-          disabled={fontSize >= 4}
-          color="inherit"
-          title="הגדל טקסט"
-        >
-          <ZoomInIcon />
-        </IconButton>
       </Paper>
     </Box>
   );
