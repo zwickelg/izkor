@@ -18,6 +18,10 @@
  * limitations under the License.
  */
 
+/*! @hebcal/core v6.6.0, distributed under GPLv2 https://www.gnu.org/licenses/gpl-2.0.txt */
+
+/*! @hebcal/hdate v0.22.4, distributed under GPLv2 https://www.gnu.org/licenses/gpl-2.0.txt */
+
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /**
