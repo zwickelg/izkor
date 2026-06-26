@@ -220,7 +220,7 @@ const PrayerDetails: React.FC = () => {
     setNfcOpen(true);
   };
 
-  const handleNfcWrite = async (overwrite = false) => {
+  const handleNfcWrite = async (overwrite = true) => {
     const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
     setNfcStatus("waiting");
     try {
@@ -440,14 +440,14 @@ const PrayerDetails: React.FC = () => {
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center", pb: 2, gap: 1 }}>
           {nfcStatus === "idle" && (
-            <Button variant="contained" onClick={() => handleNfcWrite(false)}>התחל כתיבה</Button>
+            <Button variant="contained" onClick={() => handleNfcWrite(true)}>התחל כתיבה</Button>
           )}
           {nfcStatus === "confirm-overwrite" && (<>
             <Button variant="contained" color="warning" onClick={() => handleNfcWrite(true)}>כן, מחק וכתוב</Button>
             <Button onClick={handleNfcClose}>ביטול</Button>
           </>)}
           {nfcStatus === "error" && (
-            <Button variant="contained" onClick={() => handleNfcWrite(false)}>נסה שוב</Button>
+            <Button variant="contained" onClick={() => handleNfcWrite(true)}>נסה שוב</Button>
           )}
           {(nfcStatus === "success" || nfcStatus === "error") && (
             <Button onClick={handleNfcClose}>סגור</Button>

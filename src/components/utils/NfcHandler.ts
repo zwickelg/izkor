@@ -22,20 +22,39 @@ export class NfcTagNotEmptyError extends Error {
   constructor() { super("הכרטיס כבר מכיל מידע"); }
 }
 
-export async function handleWriteUrl(url: string, overwrite = false) {
+export async function handleWriteUrl(url: string, overwrite = true): Promise<void> {
   if (!("NDEFReader" in window)) {
     throw new Error("NFC אינו נתמך. יש להשתמש ב-Chrome על אנדרואיד עם NFC מופעל.");
   }
   const urlRecord = { recordType: "url", data: url };
   const ndef = new (window as any).NDEFReader();
-  try {
-    await ndef.write({ records: [urlRecord] }, { overwrite });
-  } catch (err: any) {
-    if (!overwrite && (err.name === "NotAllowedError" || err.message?.includes("empty"))) {
-      throw new NfcTagNotEmptyError();
+
+  return new Promise(async (resolve, reject) => {
+    // הגדרת listeners לפני scan() כדי למנוע race condition
+    ndef.addEventListener("reading", async ({ message }: any) => {
+      try {
+        if (!overwrite && message.records?.length > 0) {
+          reject(new NfcTagNotEmptyError());
+          return;
+        }
+        await ndef.write({ records: [urlRecord] });
+        resolve();
+      } catch (err: any) {
+        reject(new Error(err.message || "שגיאה בכתיבה לכרטיס"));
+      }
+    }, { once: true });
+
+    ndef.addEventListener("readingerror", () => {
+      reject(new Error("לא ניתן לקרוא את הכרטיס. נסה שוב."));
+    }, { once: true });
+
+    // scan() תופס את ה-NFC reader לפני שהאנדרואיד יספיק להתערב
+    try {
+      await ndef.scan();
+    } catch (err: any) {
+      reject(new Error(err.message || "לא ניתן להפעיל NFC"));
     }
-    throw new Error(err.message || "שגיאה בכתיבה לכרטיס");
-  }
+  });
 }
 
 export async function handleRead() {
