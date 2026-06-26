@@ -2,10 +2,9 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
-import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import SearchIcon from "@mui/icons-material/Search";
 import Main from "./Main";
 import "./App.css";
 import { CacheProvider } from "@emotion/react";
@@ -15,6 +14,18 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { useSelector } from "react-redux";
 import { RootState } from "./app/store";
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
+
+const FontZoomIcon = ({ sign }: { sign: "+" | "−" }) => (
+  <Box sx={{ position: "relative", display: "inline-flex", width: 28, height: 28 }}>
+    <SearchIcon sx={{ fontSize: "1.3rem", position: "absolute", top: 0, left: 0 }} />
+    <Box component="span" sx={{
+      position: "absolute", bottom: -1, right: -3,
+      fontSize: "1rem", fontWeight: 900, lineHeight: 1, fontFamily: "sans-serif",
+    }}>
+      {sign}
+    </Box>
+  </Box>
+);
 
 function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, increaseFont: () => void, decreaseFont: () => void }) {
   const theme = useTheme();
@@ -55,18 +66,18 @@ function MyApp({ fontSize, increaseFont, decreaseFont }: { fontSize: number, inc
             {isPrayerPage && (
               <>
                 <IconButton onClick={decreaseFont} color="inherit" title="הקטן טקסט" disabled={fontSize <= 1}>
-                  <TextDecreaseIcon />
+                  <FontZoomIcon sign="−" />
                 </IconButton>
                 <IconButton onClick={increaseFont} color="inherit" title="הגדל טקסט" disabled={fontSize >= 4}>
-                  <TextIncreaseIcon />
+                  <FontZoomIcon sign="+" />
                 </IconButton>
               </>
             )}
             <IconButton onClick={colorMode.toggleColorMode} color="inherit">
               {theme.palette.mode === "dark" ? (
-                <Brightness7Icon />
+                <LightModeIcon />
               ) : (
-                <Brightness4Icon />
+                <DarkModeIcon />
               )}
             </IconButton>
           </div>
