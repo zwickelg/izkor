@@ -35,7 +35,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const baseUrl = "https://zwickelg.github.io/izkor";
+const baseUrl = window.location.origin;
 
 const formatDeathDate = (dateString: string): string => {
   if (!dateString) return "";

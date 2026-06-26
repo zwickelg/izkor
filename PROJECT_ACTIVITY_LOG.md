@@ -21,6 +21,8 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
+| `cf58971` | 2026-06-27 | Migrate deployment from GitHub Pages to S3/CloudFront |
+| `a9a8e4a` | 2026-06-26 | Fix המשך button gradient: opaque dark-to-white via Box backgroundImage |
 | `eb07c62` | 2026-06-26 | Improve PrayerDetails layout: centered rows, name+ז"ל on one line |
 | `884d6e7` | 2026-06-26 | Fix NFC write: use scan() first to prevent Android OS interception |
 | `8e1f725` | 2026-06-26 | Add deceased name to WhatsApp share; fix OG image meta tags |
