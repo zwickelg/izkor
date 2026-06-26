@@ -156,35 +156,16 @@ const PrayerDetails: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column", pt: 8, pb: 12 }}>
-      <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
-
-        {/* Banner */}
-        <Fade in={true} timeout={800}>
-          <Box
-            sx={{
-              width: "100%",
-              height: 160,
-              borderRadius: "20px",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "linear-gradient(135deg, #1a237e 0%, #283593 60%, #1565c0 100%)",
-              boxShadow: "0 6px 24px rgba(0,0,0,0.35)",
-              gap: 1,
-            }}
-          >
+    <Container maxWidth="sm" sx={{ minHeight: "100dvh", display: "flex", flexDirection: "column", pt: 10, pb: 12 }}>
+      <Stack spacing={1} sx={{ flexGrow: 1 }}>
+        <Fade in={true} timeout={1000}>
+          <Box sx={{ textAlign: "center" }}>
             <img
               src={`${baseUrl}/images/Izkor.png`}
               alt="יזכור"
-              style={{ height: "90px", objectFit: "contain", filter: "drop-shadow(0px 4px 12px rgba(0,0,0,0.4))" }}
+              style={{ borderRadius: '50%', maxWidth: '120px', filter: 'drop-shadow(0px 4px 8px rgba(0,0,0,0.2))' }}
             />
-            <Typography
-              variant="subtitle1"
-              sx={{ color: "rgba(255,255,255,0.85)", fontFamily: "FrankRuehl, sans-serif", letterSpacing: "6px" }}
-            >
+            <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 0, color: '#ffffff', fontFamily: 'FrankRuehl, sans-serif', fontWeight: 'normal', letterSpacing: '8px', textShadow: "0px 4px 12px rgba(0,0,0,0.3)" }}>
               {formData.gender === "female" ? "פרטי המנוחה" : "פרטי המנוח"}
             </Typography>
           </Box>
@@ -199,7 +180,7 @@ const PrayerDetails: React.FC = () => {
               border: "1px solid",
               borderColor: "divider",
               borderRadius: "24px",
-              overflow: "visible"
+              overflow: "visible",
             }}
           >
             <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
