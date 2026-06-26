@@ -18,22 +18,23 @@ export async function handleWrite(text: string) {
     throw new Error(`${err.message}`);
   }
 }
-export async function handleWriteUrl(url: string) {
+export class NfcTagNotEmptyError extends Error {
+  constructor() { super("הכרטיס כבר מכיל מידע"); }
+}
+
+export async function handleWriteUrl(url: string, overwrite = false) {
+  if (!("NDEFReader" in window)) {
+    throw new Error("NFC אינו נתמך. יש להשתמש ב-Chrome על אנדרואיד עם NFC מופעל.");
+  }
+  const urlRecord = { recordType: "url", data: url };
+  const ndef = new (window as any).NDEFReader();
   try {
-    if (!("NDEFReader" in window)) {
-      throw new Error("לא ניתן לצרוב את הכרטיס");
-    } else {
-      const urlRecord = {
-        recordType: "url",
-        data: url,
-      };
-      const ndef = new (window as any).NDEFReader();
-      await ndef.write({ records: [urlRecord] });
-      console.log(`Success`);
-    }
+    await ndef.write({ records: [urlRecord] }, { overwrite });
   } catch (err: any) {
-    console.log(`Error ${err.message}`);
-    throw new Error(`${err.message}`);
+    if (!overwrite && (err.name === "NotAllowedError" || err.message?.includes("empty"))) {
+      throw new NfcTagNotEmptyError();
+    }
+    throw new Error(err.message || "שגיאה בכתיבה לכרטיס");
   }
 }
 

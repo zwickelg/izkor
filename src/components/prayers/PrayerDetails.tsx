@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import PrayerButtons from "../utils/PrayerButtons";
-import { handleWriteUrl } from "../utils/NfcHandler";
+import { handleWriteUrl, NfcTagNotEmptyError } from "../utils/NfcHandler";
 import { compressJsonToShortString } from "../utils/compressUtil";
 import * as clipboard from "clipboard-polyfill";
 import { registerShareDialog, unregisterShareDialog } from "../../shareDialogBridge";
@@ -14,6 +14,9 @@ import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import TapAndPlayIcon from "@mui/icons-material/TapAndPlay";
 import CloseIcon from "@mui/icons-material/Close";
+import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
   Container,
   Stack,
@@ -23,7 +26,13 @@ import {
   Typography,
   Card,
   CardContent,
-  Drawer,
+  SwipeableDrawer,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  CircularProgress,
 } from "@mui/material";
 
 const baseUrl = "https://zwickelg.github.io/izkor";
@@ -89,6 +98,9 @@ const DetailRow = ({
 const PrayerDetails: React.FC = () => {
   const [compressedUrl, setCompressedUrl] = useState("");
   const [shareOpen, setShareOpen] = useState(false);
+  const [nfcOpen, setNfcOpen] = useState(false);
+  const [nfcStatus, setNfcStatus] = useState<"idle" | "waiting" | "confirm-overwrite" | "success" | "error">("idle");
+  const [nfcError, setNfcError] = useState("");
   const navigate = useNavigate();
   const formData = useSelector((state: RootState) => state.izkor);
 
@@ -201,10 +213,32 @@ const PrayerDetails: React.FC = () => {
     }
   };
 
-  const handleNfcClick = async () => {
+  const handleNfcClick = () => {
+    setNfcStatus("idle");
+    setNfcError("");
+    setNfcOpen(true);
+  };
+
+  const handleNfcWrite = async (overwrite = false) => {
     const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
-    console.log("handleNfxClick textValue " + fullUrl);
-    await handleWriteUrl(fullUrl);
+    setNfcStatus("waiting");
+    try {
+      await handleWriteUrl(fullUrl, overwrite);
+      setNfcStatus("success");
+    } catch (err: any) {
+      if (err instanceof NfcTagNotEmptyError) {
+        setNfcStatus("confirm-overwrite");
+      } else {
+        setNfcStatus("error");
+        setNfcError(err.message || "שגיאה לא ידועה");
+      }
+    }
+  };
+
+  const handleNfcClose = () => {
+    setNfcOpen(false);
+    setNfcStatus("idle");
+    setNfcError("");
   };
 
   return (
@@ -299,24 +333,24 @@ const PrayerDetails: React.FC = () => {
       />
 
       {/* Share Drawer */}
-      <Drawer
+      <SwipeableDrawer
         anchor="bottom"
         open={shareOpen}
         onClose={() => setShareOpen(false)}
+        onOpen={() => setShareOpen(true)}
+        swipeAreaWidth={56}
+        disableSwipeToOpen
         PaperProps={{
           sx: { borderRadius: "20px 20px 0 0", px: 3, pb: 5, pt: 2, bgcolor: "background.default" },
         }}
       >
-        <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: "text.disabled", mx: "auto", mb: 2 }} />
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
-          <Box sx={{ width: 40 }} />
-          <Typography variant="h6" sx={{ fontFamily: "FrankRuehl, sans-serif" }}>
-            שיתוף
-          </Typography>
-          <IconButton size="small" onClick={() => setShareOpen(false)}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
+        <Box
+          onClick={() => setShareOpen(false)}
+          sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: "text.disabled", mx: "auto", mb: 2, cursor: "pointer" }}
+        />
+        <Typography variant="h6" sx={{ fontFamily: "FrankRuehl, sans-serif", textAlign: "center", mb: 3 }}>
+          שיתוף
+        </Typography>
         <Stack direction="row" spacing={3} justifyContent="center" flexWrap="wrap" useFlexGap>
           <ShareOption
             icon={<img src={`${baseUrl}/images/WhatsappWhite.svg`} alt="WhatsApp" style={{ width: 24, height: 24 }} />}
@@ -340,7 +374,85 @@ const PrayerDetails: React.FC = () => {
             onClick={() => { handleNfcClick(); setShareOpen(false); }}
           />
         </Stack>
-      </Drawer>
+      </SwipeableDrawer>
+
+      {/* NFC Dialog */}
+      <Dialog
+        open={nfcOpen}
+        onClose={handleNfcClose}
+        dir="rtl"
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{ sx: { bgcolor: "background.default" } }}
+      >
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Typography variant="h6">כתיבה לכרטיס NFC</Typography>
+          <IconButton size="small" onClick={handleNfcClose}><CloseIcon /></IconButton>
+        </DialogTitle>
+        <DialogContent>
+          {nfcStatus === "idle" && (
+            <Stack spacing={2} alignItems="center" sx={{ py: 2 }}>
+              <PhoneAndroidIcon sx={{ fontSize: 56, color: "primary.main" }} />
+              <Typography align="center">
+                לחץ על "התחל כתיבה" ואז קרב כרטיס NFC לגב הטלפון.
+              </Typography>
+              <Typography variant="body2" color="text.secondary" align="center">
+                זמין רק ב-Chrome על אנדרואיד עם NFC מופעל.
+              </Typography>
+            </Stack>
+          )}
+          {nfcStatus === "waiting" && (
+            <Stack spacing={2} alignItems="center" sx={{ py: 2 }}>
+              <CircularProgress size={56} />
+              <Typography align="center">ממתין לכרטיס NFC...</Typography>
+              <Typography variant="body2" color="text.secondary" align="center">
+                קרב כרטיס NFC לגב הטלפון
+              </Typography>
+            </Stack>
+          )}
+          {nfcStatus === "confirm-overwrite" && (
+            <Stack spacing={2} alignItems="center" sx={{ py: 2 }}>
+              <ErrorOutlineIcon sx={{ fontSize: 56, color: "warning.main" }} />
+              <Typography align="center" fontWeight="bold">
+                הכרטיס כבר מכיל מידע
+              </Typography>
+              <Typography variant="body2" color="text.secondary" align="center">
+                האם למחוק את המידע הקיים ולכתוב מחדש?
+              </Typography>
+            </Stack>
+          )}
+          {nfcStatus === "success" && (
+            <Stack spacing={2} alignItems="center" sx={{ py: 2 }}>
+              <CheckCircleOutlineIcon sx={{ fontSize: 56, color: "success.main" }} />
+              <Typography align="center" color="success.main">
+                הכרטיס נכתב בהצלחה!
+              </Typography>
+            </Stack>
+          )}
+          {nfcStatus === "error" && (
+            <Stack spacing={2} alignItems="center" sx={{ py: 2 }}>
+              <ErrorOutlineIcon sx={{ fontSize: 56, color: "error.main" }} />
+              <Typography align="center" color="error.main">שגיאה בכתיבה</Typography>
+              <Typography variant="body2" color="text.secondary" align="center">{nfcError}</Typography>
+            </Stack>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "center", pb: 2, gap: 1 }}>
+          {nfcStatus === "idle" && (
+            <Button variant="contained" onClick={() => handleNfcWrite(false)}>התחל כתיבה</Button>
+          )}
+          {nfcStatus === "confirm-overwrite" && (<>
+            <Button variant="contained" color="warning" onClick={() => handleNfcWrite(true)}>כן, מחק וכתוב</Button>
+            <Button onClick={handleNfcClose}>ביטול</Button>
+          </>)}
+          {nfcStatus === "error" && (
+            <Button variant="contained" onClick={() => handleNfcWrite(false)}>נסה שוב</Button>
+          )}
+          {(nfcStatus === "success" || nfcStatus === "error") && (
+            <Button onClick={handleNfcClose}>סגור</Button>
+          )}
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
