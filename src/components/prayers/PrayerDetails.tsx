@@ -12,6 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import TapAndPlayIcon from "@mui/icons-material/TapAndPlay";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Container,
   Stack,
@@ -292,13 +293,19 @@ const PrayerDetails: React.FC = () => {
         open={shareOpen}
         onClose={() => setShareOpen(false)}
         PaperProps={{
-          sx: { borderRadius: "20px 20px 0 0", px: 3, pb: 5, pt: 2 },
+          sx: { borderRadius: "20px 20px 0 0", px: 3, pb: 5, pt: 2, bgcolor: "background.default" },
         }}
       >
         <Box sx={{ width: 40, height: 4, borderRadius: 2, bgcolor: "text.disabled", mx: "auto", mb: 2 }} />
-        <Typography variant="h6" sx={{ textAlign: "center", mb: 3, fontFamily: "FrankRuehl, sans-serif" }}>
-          שיתוף
-        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}>
+          <Box sx={{ width: 40 }} />
+          <Typography variant="h6" sx={{ fontFamily: "FrankRuehl, sans-serif" }}>
+            שיתוף
+          </Typography>
+          <IconButton size="small" onClick={() => setShareOpen(false)}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <Stack direction="row" spacing={3} justifyContent="center" flexWrap="wrap" useFlexGap>
           <ShareOption
             icon={<img src={`${baseUrl}/images/WhatsappWhite.svg`} alt="WhatsApp" style={{ width: 24, height: 24 }} />}
