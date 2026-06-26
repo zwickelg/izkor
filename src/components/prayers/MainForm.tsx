@@ -356,15 +356,17 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
         </Grow>
 
         <Box
-          sx={{
+          sx={(theme) => ({
             position: "fixed",
             bottom: 0,
             left: 0,
             right: 0,
             p: 0,
             zIndex: 1000,
-            background: "transparent"
-          }}
+            backgroundImage: theme.palette.mode === "dark"
+              ? "linear-gradient(270deg, #1a1c20, #ffffff)"
+              : "linear-gradient(270deg, #c3cfe2, #ffffff)",
+          })}
         >
           <Button
             variant="contained"
@@ -377,12 +379,12 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
               fontSize: "1.2rem",
               fontWeight: 600,
               color: "#000000",
-              borderRadius: 0, // Full width bottom bar
+              borderRadius: 0,
               justifyContent: "flex-end",
-              background: "linear-gradient(270deg, rgba(255, 255, 255, 0) -0.18%, rgba(255, 255, 255, 0.9) 100.18%)",
+              background: "transparent !important",
               boxShadow: "none",
               "&:hover": {
-                background: "linear-gradient(270deg, rgba(255, 255, 255, 0.1) -0.18%, rgba(255, 255, 255, 1) 100.18%)",
+                background: "rgba(255,255,255,0.15) !important",
               },
               "& .MuiButton-endIcon": {
                 color: "#000000",
