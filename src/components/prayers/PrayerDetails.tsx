@@ -76,17 +76,14 @@ const DetailRow = ({
     sx={{
       display: "flex",
       flexDirection: "row",
+      justifyContent: "center",
       alignItems: "center",
+      gap: 1,
       borderBottom: "1px solid rgba(0,0,0,0.05)",
       py: 1,
     }}
   >
-    <Typography
-      variant="subtitle1"
-      fontWeight="bold"
-      color="primary.main"
-      sx={{ minWidth: "120px" }}
-    >
+    <Typography variant="subtitle1" fontWeight="bold" color="primary.main">
       {label}:
     </Typography>
     <Typography variant="body1" color="text.primary" sx={{ fontWeight: 500 }}>
@@ -299,8 +296,10 @@ const PrayerDetails: React.FC = () => {
               sx={{ p: 2, display: "flex", flexDirection: "column", gap: 1 }}
             >
               <Stack spacing={0.5}>
-                <DetailRow label="שם" value={formData.firstName} />
-                <DetailRow label="שם משפחה" value={formData.lastName} />
+                <DetailRow
+                  label="שם"
+                  value={[formData.firstName, formData.lastName].filter(Boolean).join(" ") + " ז״ל"}
+                />
                 <DetailRow
                   label="מין"
                   value={formData.gender === "female" ? "נקבה" : "זכר"}
