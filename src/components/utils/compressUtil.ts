@@ -1,12 +1,15 @@
 import LZString from "lz-string";
 
 export function compressJsonToShortString(obj: any): string {
-  const jsonString = JSON.stringify(obj);
-  const compressedString = LZString.compressToBase64(jsonString);
-  return compressedString;
+  return LZString.compressToEncodedURIComponent(JSON.stringify(obj));
 }
 
 export function decompressShortStringToJson(shortString: string): any {
-  const jsonString = LZString.decompressFromBase64(shortString);
-  return JSON.parse(jsonString);
+  // Try new format (EncodedURIComponent) first, fall back to old Base64 format
+  try {
+    const json = LZString.decompressFromEncodedURIComponent(shortString);
+    if (json) return JSON.parse(json);
+  } catch {}
+  const json = LZString.decompressFromBase64(shortString);
+  return JSON.parse(json);
 }

@@ -20,7 +20,6 @@ import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import {
   Container,
   Stack,
@@ -38,6 +37,10 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
+
+const WazeIcon: React.FC = () => (
+  <img src={`${process.env.PUBLIC_URL}/images/waze-icon.svg`} width={24} height={24} alt="Waze" />
+);
 
 const baseUrl = window.location.origin;
 
@@ -172,7 +175,7 @@ const PrayerDetails: React.FC = () => {
     if (!compressedUrl) return;
 
     // For HashRouter, the route must be after #/
-    const printUrl = `${window.location.origin}${window.location.pathname}#/print?data=${encodeURIComponent(compressedUrl)}`;
+    const printUrl = `${window.location.origin}${window.location.pathname}#/print?data=${compressedUrl}`;
 
     // On mobile, specifying width/height often triggers buggy popup behaviors.
     // Opening in a new tab (_blank) is more reliable.
@@ -211,7 +214,7 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleShareWithWhatsApp = () => {
-    const shareableUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
+    const shareableUrl = `${baseUrl}/#/?data=${compressedUrl}`;
     const name = [formData.firstName, formData.lastName].filter(Boolean).join(" ");
     const message = `תפילות לעילוי נשמת ${name} ז״ל\n${shareableUrl}`;
     window.open(
@@ -221,7 +224,7 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleCopyClick = () => {
-    const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
+    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
     const name = [formData.firstName, formData.lastName].filter(Boolean).join(" ");
     const text = `תפילות לעילוי נשמת ${name} ז״ל\n${fullUrl}`;
     if (navigator && navigator.clipboard)
@@ -238,7 +241,7 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleNfcWrite = async (overwrite = true) => {
-    const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
+    const fullUrl = `${baseUrl}/#/?data=${compressedUrl}`;
     setNfcStatus("waiting");
     try {
       await handleWriteUrl(fullUrl, overwrite);
@@ -409,8 +412,9 @@ const PrayerDetails: React.FC = () => {
           />
           {formData.graveLocation && (
             <ShareOption
-              icon={<DirectionsIcon />}
+              icon={<WazeIcon />}
               label="וייז"
+              color="#05C3FF"
               onClick={() => { handleShareWithWaze(); setShareOpen(false); }}
             />
           )}
