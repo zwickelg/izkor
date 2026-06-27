@@ -10,10 +10,9 @@
 Users enter the name/gender/details of a deceased person → the app guides them through a prayer sequence (Psalms, Kaddish, El Male Rahamim, etc.) one screen at a time.
 
 - **Repo:** `C:\priv\MyDevelop\izkor\izkor`  
-- **GitHub Pages:** `https://zwickelg.github.io/izkor/`  
 - **CloudFront/S3:** `https://d5ajvage8yosb.cloudfront.net`  
 - **Stack:** React 18 + TypeScript, Redux Toolkit, MUI v5 (RTL), HashRouter, LZ-string URL compression, `@react-pdf/renderer`, Web NFC API, `@hebcal/core`
-- **Deploy:** `npm run deploy` (gh-pages) + manual copy of `/build` to S3  
+- **Deploy:** `npm run deploy` → builds + syncs to S3 + CloudFront invalidation
 
 ---
 
@@ -21,6 +20,7 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
+| `58efa3e` | 2026-06-27 | Add Android TWA app via Bubblewrap |
 | `6ff3022` | 2026-06-27 | Round image on last prayer page (PrayerEnd) |
 | `7af9c63` | 2026-06-27 | Replace app icon with new candle/Star of David design |
 | `ad5490e` | 2026-06-27 | Replace green WhatsApp image icon with MUI WhatsApp icon |
@@ -46,48 +46,48 @@ Users enter the name/gender/details of a deceased person → the app guides them
 ## Current State (as of 2026-06-27)
 
 ### Uncommitted Changes
-None — branch fully committed and deployed.
+None — branch fully committed and pushed.
 
-### New Files Added
+### Google Play Publishing Status
+- Developer account (`zwickelg@gmail.com`, ID: `5848737244631385419`) was closed on Mar 14, 2024 due to inactivity.
+- Cannot create new account with same Google account — blocked by Google.
+- Appeal submitted via Google Play support form (June 2026). Awaiting response (1–5 business days).
+- If appeal fails: register new developer account with a different Google account ($25 fee), then update package name in `twa-manifest.json` and rebuild APK.
+
+### Play Store Assets (`play-store-assets/`)
+| File | Description |
+|------|-------------|
+| `screenshot_01_home.png` | Entry form — dark mode |
+| `screenshot_03_details.png` | Prayer details — dark mode, male (דוד לוי) |
+| `screenshot_04_prayer.png` | Prayer text — dark mode |
+| `screenshot_05_prayer2.png` | Psalm 16 — dark mode |
+| `screenshot_07_details_light.png` | Prayer details — light mode, female (מרים כהן / אסתר) |
+| `screenshot_08_prayer_light.png` | Prayer text — light mode |
+| `store_icon.png` | App icon |
+
+**Still needed:** one screenshot showing the share drawer open. `images/Izkor.png` re-uploaded to S3 and CF invalidation submitted 2026-06-27 (should propagate within minutes).
+
+### Privacy Policy
+Live at `https://d5ajvage8yosb.cloudfront.net/privacy.html` — bilingual (Hebrew + English). Also in `public/privacy.html`.
+
+### Android TWA Setup
 | File | Purpose |
 |------|---------|
-| `src/components/utils/hebrewDate.ts` | Hebrew calendar utils using `@hebcal/core`: `formatHebrewDate`, `getHebrewDateParts`, `parseHebrewDay`, `parseHebrewYear`, `hebrewToGregorianISO`, `HEBREW_MONTHS` |
-| `src/shareDialogBridge.ts` | Module-level singleton for App.tsx → PrayerDetails share drawer cross-component communication |
-| `public/favicon.png` | 32×32 PNG favicon (replaced favicon.ico) |
+| `twa-manifest.json` | Bubblewrap configuration (package: `com.izkor.app`) |
+| `build.gradle`, `settings.gradle`, `gradle.properties` | Android/Gradle build config |
+| `gradlew`, `gradlew.bat` | Gradle wrapper scripts |
+| `gradle/` | Gradle wrapper jar + properties |
+| `app/` | Android app source (Java + resources) |
+| `assetlinks.json` | Digital Asset Links — deployed to `s3://izkor/.well-known/assetlinks.json` |
+| `android.keystore` | Signing keystore — **NOT in git**, keep backed up |
 
----
-
-## Work Completed This Session
-
-### Death Date Feature
-- Added `deathDate: string` to Redux slice (`izkorSlice.ts`)
-- `MainForm.tsx`: date input with עברי/לועזי toggle
-  - Gregorian: `<TextField type="date" />`
-  - Hebrew: 3 fields — day (gematria letters א–ל), month (dropdown), year (gematria e.g. תשמ"ב)
-- `deathDate` included in URL sharing (`updateFields` in both MainForm and PrayerAllPrint)
-- `PrayerDetails.tsx`: shows date as `15.1.2024 / כ״ב בשבט תשפ״ד`
-
-### Print Cover Page (`PrayerAllPrint.tsx`)
-- Full first page with: circular image, name + ז"ל, בן/בת + parent name, date (Hebrew + Gregorian), תנצב"ה
-- Full-page black border frame
-- All text black, FrankRuehl font throughout
-
-### Share Drawer (`PrayerDetails.tsx`)
-- `Drawer` → `SwipeableDrawer`: swipe-to-close on mobile, click handle on desktop
-- Removed X button; drag handle has `onClick` to close
-- WhatsApp message includes: `תפילות לעילוי נשמת [שם] ז״ל\n[URL]`
-
-### NFC (`NfcHandler.ts` + `PrayerDetails.tsx`)
-- Dialog: idle → waiting → success/error (or confirm-overwrite if tag has data)
-- Fixed IO error: now uses `scan()` first to claim NFC reader before Android OS intercepts
-- `NfcTagNotEmptyError` class for overwrite detection
-
-### PrayerDetails Layout
-- Detail rows centered (`justifyContent: "center"`)
-- Name + last name combined with ז"ל on one row: `שם: זהבה צויקל ז״ל`
-
-### OG Meta Tags (`public/index.html`)
-- Added `og:image`, `og:title`, `og:description`, `og:url` for WhatsApp link preview
+**To rebuild the APK:**
+```
+$env:JAVA_HOME = "C:\Users\zwick\.bubblewrap\jdk\jdk-17.0.11+9"
+bubblewrap build
+# Enter keystore password when prompted
+# Output: app-release-signed.apk (side-load) and app/build/outputs/bundle/release/app-release.aab (Play Store)
+```
 
 ---
 
@@ -95,28 +95,16 @@ None — branch fully committed and deployed.
 
 | # | Item | Status |
 |---|------|--------|
-| — | **המשך button gradient** — gradient on outer Box (`backgroundImage` via top-level sx callback), Button transparent | ✅ Done |
-| — | **Deploy to S3/CloudFront** — `npm run deploy` syncs to `s3://izkor` + CloudFront invalidation | ✅ Done |
-| — | **Replace app icon** — new candle/Star of David/יזכור image; all sizes (512, 192, 32 favicon) | ✅ Done |
-| — | **Round image on print last page** — `borderRadius: "50%"` in PrayerEnd.tsx | ✅ Done |
-| — | **WhatsApp icon** — replaced custom SVG with MUI `<WhatsAppIcon />` (black/white, matches other icons) | ✅ Done |
-| — | **Gregorian date picker** — replaced native date input with 3 fields (day text / month select / year text) | ✅ Done |
-| — | **Share URL** — uses `window.location.origin` instead of hardcoded GitHub URL | ✅ Done |
-| 2 | Wrap to Android app (TWA/Bubblewrap) | ✅ Done |
-| 10 | Change the dark/light mode buttons | ⬜ Pending |
-| 11 | Change color of name/parent name in prayers | ⬜ Pending |
 | 13 | Upload image | ⬜ Pending |
-| 14 | Add date and place of grave (Waze) | ⬜ Pending |
 | 15 | Link to download the app | ⬜ Pending |
 | 16 | How to quit the app | ⬜ Pending |
 | 17 | Adjust screen size to fit | ⬜ Pending |
-| 18 | Contrast in start page | ⬜ Pending |
 | 20 | Allow X usage or unlimited usage | ⬜ Pending |
 
 ### Completed Items
 | # | Item |
 |---|------|
-| 2 | Android TWA app via Bubblewrap — `app-release-signed.apk`, Digital Asset Links deployed |
+| 2 | Android TWA via Bubblewrap — `app-release-signed.apk` + Digital Asset Links at `/.well-known/assetlinks.json` |
 | 1 | Make המשך button bigger in app (same as readonly) |
 | 4 | Read-only mode: text not selectable |
 | 5 | Divider between prayers |
@@ -139,6 +127,7 @@ None — branch fully committed and deployed.
 - **NFC** — `scan()` must be called first (before `write()`) to prevent Android OS from intercepting the tag
 - **Fonts** — `Assistant`, `FrankRuehl`, `nrkis` in `src/fonts/` and `public/fonts/`
 - **Theming** — MUI v5 dark/light toggle; dark bg: `linear-gradient(135deg, #1a1c20 0%, #0f1013 100%)`
+- **TWA** — Bubblewrap-generated Android project; Digital Asset Links at `/.well-known/assetlinks.json` on CloudFront; Gradle heap reduced to 512m; Bubblewrap JDK at `C:\Users\zwick\.bubblewrap\jdk\jdk-17.0.11+9`
 
 ---
 
@@ -157,6 +146,9 @@ None — branch fully committed and deployed.
 | `src/components/prayers/PrayerDetails.tsx` | Route `/page1` — review details; share drawer (WhatsApp/Copy/Print/NFC) |
 | `src/components/prayers/PrayerAll.tsx` | Route `/page2` — scroll-paged prayer sequence |
 | `src/components/prayers/PrayerAllPrint.tsx` | Route `/print` — print view with cover page |
+| `twa-manifest.json` | Bubblewrap TWA config |
+| `android.keystore` | APK signing key (NOT in git — back up separately) |
+| `assetlinks.json` | Digital Asset Links (also deployed to S3) |
 
 ---
 
@@ -169,37 +161,44 @@ None — branch fully committed and deployed.
 **Project:** Izkor (`C:\priv\MyDevelop\izkor\izkor`) — Hebrew PWA for Jewish memorial prayers.  
 **Stack:** React 18 + TypeScript, Redux Toolkit, MUI v5 RTL, HashRouter, `@hebcal/core`, `@react-pdf/renderer`, Web NFC API.  
 **Live:** `https://d5ajvage8yosb.cloudfront.net` (S3 + CloudFront; deploy with `npm run deploy`)  
-**GitHub:** `https://github.com/zwickelg/izkor` — branch `main`, fully deployed and up to date.
+**GitHub:** `https://github.com/zwickelg/izkor` — branch `main`, fully committed and pushed.
 
 **Recent completed work (this session):**
-- Replaced app icon with new candle/Star of David/יזכור design (1024×1024 source → 512/192/32 sizes, favicon.png)
-- Fixed `PrayerDetails.tsx` image src to use `process.env.PUBLIC_URL` instead of `baseUrl` (was causing broken image on dev server)
-- Rounded the image on the last prayer page (`PrayerEnd.tsx`: `borderRadius: "50%"`)
-- Replaced WhatsApp icon with MUI `<WhatsAppIcon />` (black/white, consistent with other share icons)
-- Replaced native date picker with 3-field Gregorian input (day text / month select / year text) in `MainForm.tsx`
-- Fixed share/NFC/WhatsApp URLs: `baseUrl = window.location.origin` (no more hardcoded GitHub URL)
-- Migrated deployment from GitHub Pages to S3/CloudFront (`package.json` deploy script, `public/index.html` OG tags)
+- Built Android TWA app using Bubblewrap (package: `com.izkor.app`)
+- Fixed `public/manifest.json`: split icon purposes into separate entries, `start_url: /`
+- Generated `assetlinks.json` and deployed to `s3://izkor/.well-known/assetlinks.json` — enables full-screen TWA (no browser bar)
+- Configured `gradle.properties`: Bubblewrap JDK path + reduced heap to 512m (was failing with 1536m)
+- APK signed with `android.keystore` (alias: `android`, keystore NOT in git)
+- Created privacy policy at `public/privacy.html` — deployed to `https://d5ajvage8yosb.cloudfront.net/privacy.html`
+- Uploaded new `images/Izkor.png` to S3; re-uploaded and invalidated CF again 2026-06-27 (was still serving old rose photo)
+- Prepared Play Store screenshots in `play-store-assets/` (6 screenshots done; share drawer screenshot still needed)
+- Retook `screenshot_03_details.png` (dark, דוד לוי) and `screenshot_07_details_light.png` (light, מרים כהן) with correct candle/Star of David image
+- Google Play developer account appeal submitted (account closed for inactivity since Mar 2024)
 
 **Deployment:**
 - AWS CLI at `C:\Program Files\Amazon\AWSCLIV2\aws.exe`
 - S3 bucket: `izkor`; CloudFront distribution: `E32DMA5MLELYS2`
 - IAM user `galit-cloude` (note spelling) — credentials valid 12 hours after `aws login`
-- `npm run deploy` = `aws s3 sync build/ s3://izkor --delete && aws cloudfront create-invalidation ...`
+- `npm run deploy` = build + S3 sync + CloudFront invalidation
 
-**Key files changed this session:**
-- `src/components/prayers/PrayerDetails.tsx` — image src fix, WhatsApp icon, share URL
-- `src/components/prayers/PrayerEnd.tsx` — round image
-- `src/components/prayers/MainForm.tsx` — 3-field Gregorian date input, המשך gradient
-- `public/images/Izkor.png`, `public/logo512.png`, `public/logo192.png`, `public/favicon.png` — new icon
-- `public/index.html` — favicon.png link, CloudFront OG tags
-- `package.json` — S3/CloudFront deploy script
+**To rebuild APK:**
+```
+$env:JAVA_HOME = "C:\Users\zwick\.bubblewrap\jdk\jdk-17.0.11+9"
+bubblewrap build
+```
 
 **Maintenance rules for Claude:**
 - After every significant change, update `PROJECT_ACTIVITY_LOG.md`: add commit to table, update TODO statuses, refresh Resume Prompt.
 - Only run `git commit`, `git push`, or `npm run deploy` when the user explicitly says those exact words.
 - Never read or write `todo.txt` — it's the user's private notes.
 
-**Pending TODO items:** Android TWA app, dark/light mode button redesign, name color in prayers, image upload, grave location/Waze, download link, quit instructions, screen size adjustment, start page contrast, X usage limits.
+**Pending TODO items:** image upload, download link, quit instructions, screen size adjustment, X usage limits.
+
+**Play Store next steps:**
+1. Wait for Google appeal response (zwickelg@gmail.com)
+2. ✅ Retake `screenshot_03` and `screenshot_07` — done (2026-06-27)
+3. Take share drawer screenshot (light or dark mode)
+4. Once account reinstated (or new account created): upload AAB + store listing
 
 ---
 

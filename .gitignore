@@ -35,3 +35,4 @@ android.keystore
 # Screenshots
 *.png
 *.jpg
+!public/images/og-image.jpg
