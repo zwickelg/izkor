@@ -54,15 +54,8 @@ const ShareOption = ({ icon, label, color, onClick }: { icon: React.ReactNode; l
   </Box>
 );
 
-interface CustomDocument extends Document {
-  fullscreenElement: Element | null;
-  webkitFullscreenElement: Element | null;
-  msFullscreenElement: Element | null;
-}
-
 interface CustomHTMLElement extends HTMLElement {
   webkitRequestFullscreen?: () => void;
-  msRequestFullscreen?: () => void;
 }
 
 // Helper component for detail rows
@@ -107,43 +100,19 @@ const PrayerDetails: React.FC = () => {
     return () => unregisterShareDialog();
   }, []);
 
-  useEffect(() => {
-    const handleFullScreenChange = () => {
-      console.log("handleFullScreenChange");
-    };
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
-    document.addEventListener("webkitfullscreenchange", handleFullScreenChange);
-    document.addEventListener("MSFullscreenChange", handleFullScreenChange);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
-      document.removeEventListener(
-        "webkitfullscreenchange",
-        handleFullScreenChange,
-      );
-      document.removeEventListener(
-        "msfullscreenchange",
-        handleFullScreenChange,
-      );
-    };
-  }, []);
-
-  const handleFullScreen = () => {
-    const elem = document.documentElement as CustomHTMLElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-  };
-
-  const handleNext = () => {
-    console.log("handleNext");
-    handleFullScreen();
+  const handleNext = async () => {
     navigate(`/page2`);
     window.scrollTo(0, 0);
+    try {
+      const elem = document.documentElement as CustomHTMLElement;
+      if (elem.requestFullscreen) {
+        await elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
+    } catch (e) {
+      // Fullscreen denied or unavailable — ignore
+    }
   };
 
   useEffect(() => {

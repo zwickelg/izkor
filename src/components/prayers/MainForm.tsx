@@ -61,18 +61,15 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   const [validationErrors, setValidationErrors] = useState({ firstName: "", err: "" });
   const [locationState, setLocationState] = useState<"idle" | "loading" | "error">("idle");
   const [dateMode, setDateMode] = useState<"gregorian" | "hebrew">("gregorian");
-  const _today = new Date();
-  const _todayISO = `${_today.getFullYear()}-${String(_today.getMonth() + 1).padStart(2, "0")}-${String(_today.getDate()).padStart(2, "0")}`;
-  const _todayHeb = getHebrewDateParts(_todayISO)!;
   const _dp = formData.deathDate ? formData.deathDate.split("-") : null;
   const _hp = formData.deathDate ? getHebrewDateParts(formData.deathDate) : null;
-  const [hebrewDay, setHebrewDay] = useState(_hp ? _hp.day : _todayHeb.day);
-  const [hebrewMonth, setHebrewMonth] = useState(_hp ? _hp.month : _todayHeb.month);
-  const [hebrewYear, setHebrewYear] = useState(_hp ? _hp.year : _todayHeb.year);
+  const [hebrewDay, setHebrewDay] = useState(_hp ? _hp.day : "");
+  const [hebrewMonth, setHebrewMonth] = useState(_hp ? _hp.month : 1);
+  const [hebrewYear, setHebrewYear] = useState(_hp ? _hp.year : "");
   const [hebrewErrors, setHebrewErrors] = useState({ day: "", year: "" });
-  const [gregorianDay, setGregorianDay] = useState(_dp ? String(Number(_dp[2])) : String(_today.getDate()));
-  const [gregorianMonth, setGregorianMonth] = useState(_dp ? Number(_dp[1]) : _today.getMonth() + 1);
-  const [gregorianYear, setGregorianYear] = useState(_dp ? _dp[0] : String(_today.getFullYear()));
+  const [gregorianDay, setGregorianDay] = useState(_dp ? String(Number(_dp[2])) : "");
+  const [gregorianMonth, setGregorianMonth] = useState(_dp ? Number(_dp[1]) : 1);
+  const [gregorianYear, setGregorianYear] = useState(_dp ? _dp[0] : "");
   const [gregorianErrors, setGregorianErrors] = useState({ day: "", year: "" });
 
   const tryUpdateFromGregorian = (day: string, month: number, year: string) => {
@@ -124,11 +121,6 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   };
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
-    if (!formData.deathDate) {
-      const t = new Date();
-      const iso = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
-      dispatch(setDeathDate(iso));
-    }
   }, []);
   useEffect(() => {
     // Check both hash-based search and standard window search for robustness with HashRouter
