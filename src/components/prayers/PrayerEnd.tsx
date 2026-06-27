@@ -42,6 +42,7 @@ const PrayerEnd: React.FC = () => {
           alt="יזכור"
           style={{
             maxWidth: "200px",
+            borderRadius: "50%",
             filter: "drop-shadow(0px 4px 12px rgba(0,0,0,0.3))",
           }}
         />
