@@ -36,6 +36,13 @@ import ManIcon from "@mui/icons-material/Man";
 import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 
+const GREGORIAN_MONTHS = [
+  { value: 1, label: "ינואר" }, { value: 2, label: "פברואר" }, { value: 3, label: "מרץ" },
+  { value: 4, label: "אפריל" }, { value: 5, label: "מאי" },    { value: 6, label: "יוני" },
+  { value: 7, label: "יולי" },  { value: 8, label: "אוגוסט" }, { value: 9, label: "ספטמבר" },
+  { value: 10, label: "אוקטובר" }, { value: 11, label: "נובמבר" }, { value: 12, label: "דצמבר" },
+];
+
 interface PrayerThilimPageProps {
   theme?: string | undefined;
 }
@@ -54,12 +61,37 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   const [hebrewMonth, setHebrewMonth] = useState(7);
   const [hebrewYear, setHebrewYear] = useState("");
   const [hebrewErrors, setHebrewErrors] = useState({ day: "", year: "" });
+  const [gregorianDay, setGregorianDay] = useState("");
+  const [gregorianMonth, setGregorianMonth] = useState(1);
+  const [gregorianYear, setGregorianYear] = useState("");
+  const [gregorianErrors, setGregorianErrors] = useState({ day: "", year: "" });
+
+  const tryUpdateFromGregorian = (day: string, month: number, year: string) => {
+    const errors = { day: "", year: "" };
+    const dayNum = parseInt(day, 10);
+    const yearNum = parseInt(year, 10);
+    if (day && (isNaN(dayNum) || dayNum < 1 || dayNum > 31)) errors.day = "ערך לא חוקי (1–31)";
+    if (year && (isNaN(yearNum) || yearNum < 100 || yearNum > 2100)) errors.year = "ערך לא חוקי";
+    setGregorianErrors(errors);
+    if (day && year && !errors.day && !errors.year) {
+      const iso = `${String(yearNum).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
+      dispatch(setDeathDate(iso));
+    }
+  };
 
   const handleDateModeChange = (_: React.MouseEvent, mode: "gregorian" | "hebrew") => {
     if (!mode) return;
     if (mode === "hebrew" && formData.deathDate) {
       const parts = getHebrewDateParts(formData.deathDate);
       if (parts) { setHebrewDay(parts.day); setHebrewMonth(parts.month); setHebrewYear(parts.year); }
+    }
+    if (mode === "gregorian" && formData.deathDate) {
+      const parts = formData.deathDate.split("-");
+      if (parts.length === 3) {
+        setGregorianYear(parts[0]);
+        setGregorianMonth(Number(parts[1]));
+        setGregorianDay(String(Number(parts[2])));
+      }
     }
     setDateMode(mode);
   };
@@ -307,13 +339,40 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
                 </ToggleButtonGroup>
 
                 {dateMode === "gregorian" ? (
-                  <TextField
-                    fullWidth variant="outlined" type="date"
-                    className="gray-gradient-input"
-                    value={formData.deathDate}
-                    onChange={(e) => dispatch(setDeathDate(e.target.value))}
-                    inputProps={{ dir: "ltr" }}
-                  />
+                  <Stack direction="row" spacing={1} alignItems="flex-start">
+                    <TextField
+                      label="יום" size="small"
+                      className="gray-gradient-input"
+                      value={gregorianDay}
+                      onChange={(e) => { setGregorianDay(e.target.value); tryUpdateFromGregorian(e.target.value, gregorianMonth, gregorianYear); }}
+                      placeholder="15"
+                      error={!!gregorianErrors.day}
+                      helperText={gregorianErrors.day || " "}
+                      inputProps={{ dir: "ltr", maxLength: 2, inputMode: "numeric" }}
+                      sx={{ width: "22%" }}
+                    />
+                    <FormControl size="small" sx={{ width: "46%" }}>
+                      <Select
+                        value={gregorianMonth}
+                        onChange={(e) => { setGregorianMonth(Number(e.target.value)); tryUpdateFromGregorian(gregorianDay, Number(e.target.value), gregorianYear); }}
+                      >
+                        {GREGORIAN_MONTHS.map(m => (
+                          <MenuItem key={m.value} value={m.value}>{m.label}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      label="שנה" size="small"
+                      className="gray-gradient-input"
+                      value={gregorianYear}
+                      onChange={(e) => { setGregorianYear(e.target.value); tryUpdateFromGregorian(gregorianDay, gregorianMonth, e.target.value); }}
+                      placeholder="1948"
+                      error={!!gregorianErrors.year}
+                      helperText={gregorianErrors.year || " "}
+                      inputProps={{ dir: "ltr", maxLength: 4, inputMode: "numeric" }}
+                      sx={{ width: "32%" }}
+                    />
+                  </Stack>
                 ) : (
                   <Stack direction="row" spacing={1} alignItems="flex-start">
                     <TextField
