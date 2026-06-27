@@ -67,7 +67,7 @@ None — branch fully committed and pushed.
 | `screenshot_08_prayer_light.png` | Prayer text — light mode |
 | `store_icon.png` | App icon |
 
-**Still needed:** one screenshot showing the share drawer open. `images/Izkor.png` re-uploaded to S3 and CF invalidation submitted 2026-06-27 (should propagate within minutes).
+**All screenshots complete** including share drawer (dark mode, `screenshot_share_drawer.png`). `images/Izkor.png` re-uploaded to S3 and CF invalidation submitted 2026-06-27.
 
 ### Privacy Policy
 Live at `https://d5ajvage8yosb.cloudfront.net/privacy.html` — bilingual (Hebrew + English). Also in `public/privacy.html`.
@@ -202,7 +202,7 @@ bubblewrap build
 **Play Store next steps:**
 1. Wait for Google appeal response (zwickelg@gmail.com)
 2. ✅ Retake `screenshot_03` and `screenshot_07` — done (2026-06-27)
-3. Take share drawer screenshot (light or dark mode)
+3. ✅ Take share drawer screenshot — done (`screenshot_share_drawer.png`, dark mode, 2026-06-27)
 4. Once account reinstated (or new account created): upload AAB + store listing
 
 ---
