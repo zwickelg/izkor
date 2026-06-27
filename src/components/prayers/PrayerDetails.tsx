@@ -100,19 +100,15 @@ const PrayerDetails: React.FC = () => {
     return () => unregisterShareDialog();
   }, []);
 
-  const handleNext = async () => {
+  const handleNext = () => {
+    const elem = document.documentElement as CustomHTMLElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(() => {});
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    }
     navigate(`/page2`);
     window.scrollTo(0, 0);
-    try {
-      const elem = document.documentElement as CustomHTMLElement;
-      if (elem.requestFullscreen) {
-        await elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      }
-    } catch (e) {
-      // Fullscreen denied or unavailable — ignore
-    }
   };
 
   useEffect(() => {
