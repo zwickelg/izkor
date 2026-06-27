@@ -97,6 +97,7 @@ const PrayerDetails: React.FC = () => {
   }, []);
 
   const handleNext = () => {
+    document.documentElement.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
     navigate(`/page2`);
     window.scrollTo(0, 0);
   };

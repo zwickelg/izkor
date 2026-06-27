@@ -184,8 +184,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
       setValidationErrors(errors);
       _resetValidationErrors();
     } else {
-      // No validation errors, proceed to next step
-
+      document.documentElement.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
       navigate("/page1");
     }
   };
