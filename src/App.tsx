@@ -98,21 +98,18 @@ export default function ToggleColorMode() {
   const increaseFont = () => setFontSize(prev => Math.min(prev + 0.25, 4));
   const decreaseFont = () => setFontSize(prev => Math.max(prev - 0.25, 1));
 
-  React.useEffect(() => {
-    const requestFs = () => {
-      document.documentElement.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
-    };
-    document.addEventListener("touchstart", requestFs, { once: true, passive: true });
-    document.addEventListener("click", requestFs, { once: true });
-    return () => {
-      document.removeEventListener("touchstart", requestFs);
-      document.removeEventListener("click", requestFs);
-    };
-  }, []);
-
   // Force light mode for printing
   // Use a more robust check that handles both initial load and subsequent navigation
   const isPrintPage = window.location.hash.includes("/print") || window.location.href.includes("/print");
+
+  const [showSplash, setShowSplash] = React.useState(!isPrintPage);
+  const [splashFading, setSplashFading] = React.useState(false);
+
+  const handleSplashTap = () => {
+    document.documentElement.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
+    setSplashFading(true);
+    setTimeout(() => setShowSplash(false), 400);
+  };
   const currentMode = isPrintPage ? "light" : mode;
 
   const colorMode = React.useMemo(
@@ -229,12 +226,31 @@ export default function ToggleColorMode() {
   });
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <CacheProvider value={cacheRtl}>
-        <ThemeProvider theme={theme}>
-          <MyApp fontSize={fontSize} increaseFont={increaseFont} decreaseFont={decreaseFont} />
-        </ThemeProvider>
-      </CacheProvider>
-    </ColorModeContext.Provider>
+    <>
+      <ColorModeContext.Provider value={colorMode}>
+        <CacheProvider value={cacheRtl}>
+          <ThemeProvider theme={theme}>
+            <MyApp fontSize={fontSize} increaseFont={increaseFont} decreaseFont={decreaseFont} />
+          </ThemeProvider>
+        </CacheProvider>
+      </ColorModeContext.Provider>
+
+      {showSplash && (
+        <div onClick={handleSplashTap} className="splash-screen" style={{ opacity: splashFading ? 0 : 1 }}>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/Izkor.png`}
+            alt="יזכור"
+            style={{ width: 130, height: 130, borderRadius: "50%", marginBottom: 28,
+              filter: "drop-shadow(0px 6px 16px rgba(0,0,0,0.6))" }}
+          />
+          <div style={{ color: "#ffffff", fontFamily: "FrankRuehl, sans-serif",
+            fontSize: "3rem", letterSpacing: "8px", marginBottom: "2.5rem",
+            textShadow: "0px 4px 12px rgba(0,0,0,0.4)" }}>
+            יזכור
+          </div>
+          <div className="splash-tap-hint">הקש להתחיל</div>
+        </div>
+      )}
+    </>
   );
 }
