@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.izkor.app",
+    "sha256_cert_fingerprints": [
+      "83:4C:22:B7:03:DD:07:0A:05:5E:9E:DE:D9:79:3F:18:22:A8:CB:A7:BE:21:4B:7A:6A:33:95:01:3B:EA:CC:00"
+    ]
+  }
+}]

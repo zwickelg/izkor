@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Android build artifacts
+*.apk
+*.aab
+*.idsig
+/app/build/
+/.gradle/
+
+# Keystore - never commit
+android.keystore
+
+# Screenshots
+*.png
+*.jpg

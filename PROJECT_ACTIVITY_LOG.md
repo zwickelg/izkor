@@ -21,6 +21,9 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
+| `6ff3022` | 2026-06-27 | Round image on last prayer page (PrayerEnd) |
+| `7af9c63` | 2026-06-27 | Replace app icon with new candle/Star of David design |
+| `ad5490e` | 2026-06-27 | Replace green WhatsApp image icon with MUI WhatsApp icon |
 | `cf58971` | 2026-06-27 | Migrate deployment from GitHub Pages to S3/CloudFront |
 | `a9a8e4a` | 2026-06-26 | Fix המשך button gradient: opaque dark-to-white via Box backgroundImage |
 | `eb07c62` | 2026-06-26 | Improve PrayerDetails layout: centered rows, name+ז"ל on one line |
@@ -40,16 +43,17 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 ---
 
-## Current State (as of 2026-06-26)
+## Current State (as of 2026-06-27)
 
 ### Uncommitted Changes
-- `src/components/prayers/MainForm.tsx` — button gradient reverted to original (transparent gradient); pending fix (see TODO below)
+None — branch fully committed and deployed.
 
-### New Files Added This Session
+### New Files Added
 | File | Purpose |
 |------|---------|
 | `src/components/utils/hebrewDate.ts` | Hebrew calendar utils using `@hebcal/core`: `formatHebrewDate`, `getHebrewDateParts`, `parseHebrewDay`, `parseHebrewYear`, `hebrewToGregorianISO`, `HEBREW_MONTHS` |
 | `src/shareDialogBridge.ts` | Module-level singleton for App.tsx → PrayerDetails share drawer cross-component communication |
+| `public/favicon.png` | 32×32 PNG favicon (replaced favicon.ico) |
 
 ---
 
@@ -91,23 +95,28 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | # | Item | Status |
 |---|------|--------|
-| — | **המשך button gradient** — ✅ Fixed: gradient on outer Box (`backgroundImage` via top-level sx callback), Button transparent. | ✅ Done |
-| 2 | Wrap to Android app | ⬜ Pending |
-| 3 | Deploy to S3 | ⬜ Pending |
+| — | **המשך button gradient** — gradient on outer Box (`backgroundImage` via top-level sx callback), Button transparent | ✅ Done |
+| — | **Deploy to S3/CloudFront** — `npm run deploy` syncs to `s3://izkor` + CloudFront invalidation | ✅ Done |
+| — | **Replace app icon** — new candle/Star of David/יזכור image; all sizes (512, 192, 32 favicon) | ✅ Done |
+| — | **Round image on print last page** — `borderRadius: "50%"` in PrayerEnd.tsx | ✅ Done |
+| — | **WhatsApp icon** — replaced custom SVG with MUI `<WhatsAppIcon />` (black/white, matches other icons) | ✅ Done |
+| — | **Gregorian date picker** — replaced native date input with 3 fields (day text / month select / year text) | ✅ Done |
+| — | **Share URL** — uses `window.location.origin` instead of hardcoded GitHub URL | ✅ Done |
+| 2 | Wrap to Android app (TWA/Bubblewrap) | ✅ Done |
 | 10 | Change the dark/light mode buttons | ⬜ Pending |
 | 11 | Change color of name/parent name in prayers | ⬜ Pending |
-| 12 | Round corners picture | ⬜ Pending |
 | 13 | Upload image | ⬜ Pending |
-| 14 | Add date and place of grave (Waze — not fully implemented) | ⬜ Pending |
+| 14 | Add date and place of grave (Waze) | ⬜ Pending |
 | 15 | Link to download the app | ⬜ Pending |
 | 16 | How to quit the app | ⬜ Pending |
 | 17 | Adjust screen size to fit | ⬜ Pending |
 | 18 | Contrast in start page | ⬜ Pending |
 | 20 | Allow X usage or unlimited usage | ⬜ Pending |
 
-### Completed Items (from todo.txt)
+### Completed Items
 | # | Item |
 |---|------|
+| 2 | Android TWA app via Bubblewrap — `app-release-signed.apk`, Digital Asset Links deployed |
 | 1 | Make המשך button bigger in app (same as readonly) |
 | 4 | Read-only mode: text not selectable |
 | 5 | Divider between prayers |
@@ -115,6 +124,7 @@ Users enter the name/gender/details of a deceased person → the app guides them
 | 7 | Remove selectable text in prayer text |
 | 8 | Titles in bright background change color |
 | 9 | Replace A+/A- text buttons with zoom icons |
+| 12 | Round corners picture (print last page) |
 | 19 | WhatsApp share includes deceased's name |
 
 ---
@@ -157,15 +167,40 @@ Users enter the name/gender/details of a deceased person → the app guides them
 ---
 
 **Project:** Izkor (`C:\priv\MyDevelop\izkor\izkor`) — Hebrew PWA for Jewish memorial prayers.  
-**Stack:** React 18 + TypeScript, Redux Toolkit, MUI v5 RTL, HashRouter, `@hebcal/core`.  
-**Live:** `https://zwickelg.github.io/izkor/`  
-**Current branch:** `main` — fully deployed and up to date except one pending local change.
+**Stack:** React 18 + TypeScript, Redux Toolkit, MUI v5 RTL, HashRouter, `@hebcal/core`, `@react-pdf/renderer`, Web NFC API.  
+**Live:** `https://d5ajvage8yosb.cloudfront.net` (S3 + CloudFront; deploy with `npm run deploy`)  
+**GitHub:** `https://github.com/zwickelg/izkor` — branch `main`, fully deployed and up to date.
 
-**All pending tasks resolved.** No uncommitted functional changes outstanding.
+**Recent completed work (this session):**
+- Replaced app icon with new candle/Star of David/יזכור design (1024×1024 source → 512/192/32 sizes, favicon.png)
+- Fixed `PrayerDetails.tsx` image src to use `process.env.PUBLIC_URL` instead of `baseUrl` (was causing broken image on dev server)
+- Rounded the image on the last prayer page (`PrayerEnd.tsx`: `borderRadius: "50%"`)
+- Replaced WhatsApp icon with MUI `<WhatsAppIcon />` (black/white, consistent with other share icons)
+- Replaced native date picker with 3-field Gregorian input (day text / month select / year text) in `MainForm.tsx`
+- Fixed share/NFC/WhatsApp URLs: `baseUrl = window.location.origin` (no more hardcoded GitHub URL)
+- Migrated deployment from GitHub Pages to S3/CloudFront (`package.json` deploy script, `public/index.html` OG tags)
 
-**Maintenance rule for Claude:**  
-After every significant change, update `PROJECT_ACTIVITY_LOG.md`: add commit to the table, update TODO statuses, refresh this Resume Prompt. Only run `git commit`, `git push`, or `npm run deploy` when the user explicitly says those exact words in that message.
+**Deployment:**
+- AWS CLI at `C:\Program Files\Amazon\AWSCLIV2\aws.exe`
+- S3 bucket: `izkor`; CloudFront distribution: `E32DMA5MLELYS2`
+- IAM user `galit-cloude` (note spelling) — credentials valid 12 hours after `aws login`
+- `npm run deploy` = `aws s3 sync build/ s3://izkor --delete && aws cloudfront create-invalidation ...`
+
+**Key files changed this session:**
+- `src/components/prayers/PrayerDetails.tsx` — image src fix, WhatsApp icon, share URL
+- `src/components/prayers/PrayerEnd.tsx` — round image
+- `src/components/prayers/MainForm.tsx` — 3-field Gregorian date input, המשך gradient
+- `public/images/Izkor.png`, `public/logo512.png`, `public/logo192.png`, `public/favicon.png` — new icon
+- `public/index.html` — favicon.png link, CloudFront OG tags
+- `package.json` — S3/CloudFront deploy script
+
+**Maintenance rules for Claude:**
+- After every significant change, update `PROJECT_ACTIVITY_LOG.md`: add commit to table, update TODO statuses, refresh Resume Prompt.
+- Only run `git commit`, `git push`, or `npm run deploy` when the user explicitly says those exact words.
+- Never read or write `todo.txt` — it's the user's private notes.
+
+**Pending TODO items:** Android TWA app, dark/light mode button redesign, name color in prayers, image upload, grave location/Waze, download link, quit instructions, screen size adjustment, start page contrast, X usage limits.
 
 ---
 
-*Last updated: 2026-06-26*
+*Last updated: 2026-06-27*
