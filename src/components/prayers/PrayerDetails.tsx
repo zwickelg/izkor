@@ -10,6 +10,7 @@ import * as clipboard from "clipboard-polyfill";
 import { registerShareDialog, unregisterShareDialog } from "../../shareDialogBridge";
 import { formatHebrewDate } from "../utils/hebrewDate";
 import IconButton from "@mui/material/IconButton";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import ContentCopyOutlinedIcon from "@mui/icons-material/ContentCopyOutlined";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import TapAndPlayIcon from "@mui/icons-material/TapAndPlay";
@@ -353,9 +354,8 @@ const PrayerDetails: React.FC = () => {
         </Typography>
         <Stack direction="row" spacing={3} justifyContent="center" flexWrap="wrap" useFlexGap>
           <ShareOption
-            icon={<img src={`${baseUrl}/images/WhatsappWhite.svg`} alt="WhatsApp" style={{ width: 24, height: 24 }} />}
+            icon={<WhatsAppIcon />}
             label="WhatsApp"
-            color="#25D366"
             onClick={() => { handleShareWithWhatsApp(); setShareOpen(false); }}
           />
           <ShareOption
