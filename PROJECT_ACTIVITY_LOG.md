@@ -20,6 +20,8 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
+| `38edab2` | 2026-06-27 | Copy Link: include deceased name in clipboard text like WhatsApp share |
+| `7859307` | 2026-06-27 | Fix WhatsApp OG preview: replace 1.6MB PNG with 44KB JPEG og-image |
 | `58efa3e` | 2026-06-27 | Add Android TWA app via Bubblewrap |
 | `6ff3022` | 2026-06-27 | Round image on last prayer page (PrayerEnd) |
 | `7af9c63` | 2026-06-27 | Replace app icon with new candle/Star of David design |
@@ -173,6 +175,9 @@ bubblewrap build
 - Uploaded new `images/Izkor.png` to S3; re-uploaded and invalidated CF again 2026-06-27 (was still serving old rose photo)
 - Prepared Play Store screenshots in `play-store-assets/` (6 screenshots done; share drawer screenshot still needed)
 - Retook `screenshot_03_details.png` (dark, דוד לוי) and `screenshot_07_details_light.png` (light, מרים כהן) with correct candle/Star of David image
+- Fixed WhatsApp OG preview: replaced 1.6MB PNG with 44KB JPEG (`public/images/og-image.jpg`, 1200×630) — WhatsApp rejected the large PNG silently
+- Fixed "העתק קישור": now copies `תפילות לעילוי נשמת [name] ז״ל\n[URL]` instead of bare URL (same format as WhatsApp share)
+- Note: Service Worker caches old JS — users need to close+reopen app (or clear site data) to get new version
 - Google Play developer account appeal submitted (account closed for inactivity since Mar 2024)
 
 **Deployment:**
