@@ -57,12 +57,15 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
 
   const [validationErrors, setValidationErrors] = useState({ firstName: "", err: "" });
   const [dateMode, setDateMode] = useState<"gregorian" | "hebrew">("gregorian");
-  const [hebrewDay, setHebrewDay] = useState("");
-  const [hebrewMonth, setHebrewMonth] = useState(7);
-  const [hebrewYear, setHebrewYear] = useState("");
-  const [hebrewErrors, setHebrewErrors] = useState({ day: "", year: "" });
   const _today = new Date();
+  const _todayISO = `${_today.getFullYear()}-${String(_today.getMonth() + 1).padStart(2, "0")}-${String(_today.getDate()).padStart(2, "0")}`;
+  const _todayHeb = getHebrewDateParts(_todayISO)!;
   const _dp = formData.deathDate ? formData.deathDate.split("-") : null;
+  const _hp = formData.deathDate ? getHebrewDateParts(formData.deathDate) : null;
+  const [hebrewDay, setHebrewDay] = useState(_hp ? _hp.day : _todayHeb.day);
+  const [hebrewMonth, setHebrewMonth] = useState(_hp ? _hp.month : _todayHeb.month);
+  const [hebrewYear, setHebrewYear] = useState(_hp ? _hp.year : _todayHeb.year);
+  const [hebrewErrors, setHebrewErrors] = useState({ day: "", year: "" });
   const [gregorianDay, setGregorianDay] = useState(_dp ? String(Number(_dp[2])) : String(_today.getDate()));
   const [gregorianMonth, setGregorianMonth] = useState(_dp ? Number(_dp[1]) : _today.getMonth() + 1);
   const [gregorianYear, setGregorianYear] = useState(_dp ? _dp[0] : String(_today.getFullYear()));
