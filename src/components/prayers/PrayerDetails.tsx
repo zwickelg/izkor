@@ -255,7 +255,7 @@ const PrayerDetails: React.FC = () => {
         <Fade in={true} timeout={1000}>
           <Box sx={{ textAlign: "center" }}>
             <img
-              src={`${baseUrl}/images/Izkor.png`}
+              src={`${process.env.PUBLIC_URL}/images/Izkor.png`}
               alt="יזכור"
               style={{
                 borderRadius: "50%",
