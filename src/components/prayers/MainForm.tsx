@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { decompressShortStringToJson } from "../utils/compressUtil";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 import {
   setFirstName,
   setLastName,
@@ -11,6 +12,7 @@ import {
   setParentName,
   setVersion,
   setDeathDate,
+  setGraveLocation,
   updateFields,
 } from "../../features/izkor/izkorSlice";
 import {
@@ -29,6 +31,7 @@ import {
   Select,
   MenuItem,
   FormControl,
+  CircularProgress,
 } from "@mui/material";
 import { HEBREW_MONTHS, getHebrewDateParts, parseHebrewDay, parseHebrewYear, hebrewToGregorianISO } from "../utils/hebrewDate";
 import WomanIcon from "@mui/icons-material/Woman";
@@ -56,6 +59,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [validationErrors, setValidationErrors] = useState({ firstName: "", err: "" });
+  const [locationState, setLocationState] = useState<"idle" | "loading" | "error">("idle");
   const [dateMode, setDateMode] = useState<"gregorian" | "hebrew">("gregorian");
   const _today = new Date();
   const _todayISO = `${_today.getFullYear()}-${String(_today.getMonth() + 1).padStart(2, "0")}-${String(_today.getDate()).padStart(2, "0")}`;
@@ -144,6 +148,7 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
             parentName: izkor.parentName,
             version: izkor.version,
             deathDate: izkor.deathDate ?? "",
+            graveLocation: izkor.graveLocation,
           })
         );
         navigate("/page1");
@@ -158,6 +163,19 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
   /*   useEffect(() => {
     _resetValidationErrors();
   }, [validationErrors]); */
+  const handleSaveLocation = () => {
+    if (!navigator.geolocation) { setLocationState("error"); return; }
+    setLocationState("loading");
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        dispatch(setGraveLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }));
+        setLocationState("idle");
+      },
+      () => setLocationState("error"),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
   const handleNext = () => {
     const errors = {
       firstName: formData.firstName.trim() === "" ? "הכנס שם פרטי" : "",
@@ -426,6 +444,34 @@ const MainForm: React.FC<PrayerThilimPageProps> = ({ theme = "dark" }) => {
                       sx={{ width: "30%" }}
                     />
                   </Stack>
+                )}
+              </Box>
+
+              <Box>
+                <Typography variant="body2" sx={{ color: '#ffffff', mb: 0.5, fontWeight: 600 }}>
+                  מיקום הקבר
+                </Typography>
+                {formData.graveLocation ? (
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="body2" sx={{ color: 'success.main', flexGrow: 1 }}>
+                      ✓ מיקום נשמר
+                    </Typography>
+                    <Button size="small" color="inherit" onClick={() => dispatch(setGraveLocation(undefined))}>
+                      נקה
+                    </Button>
+                  </Stack>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={handleSaveLocation}
+                    disabled={locationState === "loading"}
+                    startIcon={locationState === "loading" ? <CircularProgress size={16} /> : <MyLocationIcon />}
+                    color={locationState === "error" ? "error" : "primary"}
+                    sx={{ justifyContent: "flex-start" }}
+                  >
+                    {locationState === "loading" ? "מאתר מיקום..." : locationState === "error" ? "שגיאה — נסה שוב" : "שמור מיקום נוכחי"}
+                  </Button>
                 )}
               </Box>
             </CardContent>

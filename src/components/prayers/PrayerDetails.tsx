@@ -316,6 +316,19 @@ const PrayerDetails: React.FC = () => {
                 {formData.deathDate && (
                   <DetailRow label="תאריך פטירה" value={formatDeathDate(formData.deathDate)} />
                 )}
+                {formData.graveLocation && (
+                  <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 1, py: 1 }}>
+                    <Typography variant="subtitle1" fontWeight="bold" color="primary.main">
+                      ניווט לקבר:
+                    </Typography>
+                    <IconButton
+                      onClick={() => window.open(`https://waze.com/ul?ll=${formData.graveLocation!.lat},${formData.graveLocation!.lng}&navigate=yes`, "_blank")}
+                      sx={{ p: 0.5 }}
+                    >
+                      <img src={`${process.env.PUBLIC_URL}/images/waze-icon.svg`} alt="Waze" style={{ width: 40, height: 40 }} />
+                    </IconButton>
+                  </Box>
+                )}
               </Stack>
 
             </CardContent>

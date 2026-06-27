@@ -20,6 +20,12 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
+| *(pending)* | 2026-06-27 | Add grave location capture (geolocation) + Waze navigation icon in PrayerDetails |
+| `31a2338` | 2026-06-27 | Revert Waze/location feature; fix WhatsApp URL encoding (URL-safe Base64) |
+| `383479a` | 2026-06-27 | Fix WhatsApp link + Waze icon (superseded by revert) |
+| `fb0768c` | 2026-06-27 | Add grave location + Waze share (reverted) |
+| `1d47992` | 2026-06-27 | MainForm: gender-aware title, today as default date, future-date validation |
+| `8096395` | 2026-06-27 | Update activity log: OG image fix and copy link fix |
 | `38edab2` | 2026-06-27 | Copy Link: include deceased name in clipboard text like WhatsApp share |
 | `7859307` | 2026-06-27 | Fix WhatsApp OG preview: replace 1.6MB PNG with 44KB JPEG og-image |
 | `58efa3e` | 2026-06-27 | Add Android TWA app via Bubblewrap |
@@ -65,6 +71,7 @@ None — branch fully committed and pushed.
 | `screenshot_05_prayer2.png` | Psalm 16 — dark mode |
 | `screenshot_07_details_light.png` | Prayer details — light mode, female (מרים כהן / אסתר) |
 | `screenshot_08_prayer_light.png` | Prayer text — light mode |
+| `screenshot_share_drawer.png` | Share drawer open — dark mode |
 | `store_icon.png` | App icon |
 
 **All screenshots complete** including share drawer (dark mode, `screenshot_share_drawer.png`). `images/Izkor.png` re-uploaded to S3 and CF invalidation submitted 2026-06-27.
@@ -122,7 +129,7 @@ bubblewrap build
 ## Key Architecture Decisions
 
 - **HashRouter** — required for GitHub Pages (no server-side routing)
-- **URL sharing** — Redux state → LZ-string Base64 → `?data=` param; `mode: "readonly"` disables Back/Edit on shared links
+- **URL sharing** — Redux state → LZ-string URL-safe Base64 (RFC 4648: `+→-`, `/→_`, no `=`) → `?data=` param; `mode: "readonly"` disables Back/Edit on shared links; decompressor falls back through old formats for backward compat
 - **RTL** — `stylis-plugin-rtl` + `@emotion/react` CacheProvider; `<html dir="rtl" lang="he">`
 - **Hebrew dates** — `@hebcal/core` with `gematriya()` / `gematriyaStrToNum()`; year displayed as `gematriya(fullYear % 1000)` (drops 5000 prefix)
 - **Share drawer** — `shareDialogBridge.ts` singleton connects App.tsx Share button → PrayerDetails drawer
@@ -141,7 +148,7 @@ bubblewrap build
 | `src/features/izkor/izkorSlice.ts` | Redux slice: `firstName, lastName, gender, parentName, version, mode, theme, deathDate` |
 | `src/App.tsx` | MUI theme, RTL cache, dark/light toggle, zoom buttons (page2 only), Share button (page1 only) |
 | `src/shareDialogBridge.ts` | Cross-component bridge: App.tsx Share button → PrayerDetails drawer |
-| `src/components/utils/compressUtil.ts` | LZ-string compress/decompress for URL sharing |
+| `src/components/utils/compressUtil.ts` | LZ-string compress (URL-safe Base64) / decompress (with fallback to old formats) |
 | `src/components/utils/hebrewDate.ts` | Hebrew calendar utilities (`@hebcal/core`) |
 | `src/components/utils/NfcHandler.ts` | Web NFC API wrapper; scan() + write() pattern |
 | `src/components/prayers/MainForm.tsx` | Route `/` — name/details entry form; decodes `?data=` on load |
@@ -166,19 +173,24 @@ bubblewrap build
 **GitHub:** `https://github.com/zwickelg/izkor` — branch `main`, fully committed and pushed.
 
 **Recent completed work (this session):**
+- **Grave location + Waze:** Added geolocation button ("שמור מיקום נוכחי") to MainForm; `graveLocation` stored in Redux and serialized into shared URL; Waze icon (official SVG from uxwing.com) shown in PrayerDetails when location is set; clicking opens Waze navigation to coordinates.
+
+
 - Built Android TWA app using Bubblewrap (package: `com.izkor.app`)
 - Fixed `public/manifest.json`: split icon purposes into separate entries, `start_url: /`
 - Generated `assetlinks.json` and deployed to `s3://izkor/.well-known/assetlinks.json` — enables full-screen TWA (no browser bar)
 - Configured `gradle.properties`: Bubblewrap JDK path + reduced heap to 512m (was failing with 1536m)
 - APK signed with `android.keystore` (alias: `android`, keystore NOT in git)
 - Created privacy policy at `public/privacy.html` — deployed to `https://d5ajvage8yosb.cloudfront.net/privacy.html`
-- Uploaded new `images/Izkor.png` to S3; re-uploaded and invalidated CF again 2026-06-27 (was still serving old rose photo)
-- Prepared Play Store screenshots in `play-store-assets/` (6 screenshots done; share drawer screenshot still needed)
-- Retook `screenshot_03_details.png` (dark, דוד לוי) and `screenshot_07_details_light.png` (light, מרים כהן) with correct candle/Star of David image
-- Fixed WhatsApp OG preview: replaced 1.6MB PNG with 44KB JPEG (`public/images/og-image.jpg`, 1200×630) — WhatsApp rejected the large PNG silently
-- Fixed "העתק קישור": now copies `תפילות לעילוי נשמת [name] ז״ל\n[URL]` instead of bare URL (same format as WhatsApp share)
-- Note: Service Worker caches old JS — users need to close+reopen app (or clear site data) to get new version
+- Uploaded new `images/Izkor.png` to S3; re-uploaded and invalidated CF again 2026-06-27
+- All Play Store screenshots complete in `play-store-assets/` including share drawer (`screenshot_share_drawer.png`)
+- Retook `screenshot_03_details.png` (dark, דוד לוי) and `screenshot_07_details_light.png` (light, מרים כהן) with correct app icon
+- Fixed WhatsApp OG preview: replaced 1.6MB PNG with 44KB JPEG (`public/images/og-image.jpg`, 1200×630)
+- Fixed "העתק קישור": copies `תפילות לעילוי נשמת [name] ז״ל\n[URL]` (same format as WhatsApp share)
 - Google Play developer account appeal submitted (account closed for inactivity since Mar 2024)
+- **MainForm improvements:** title changes to פרטי המנוחה/המנוח based on gender; Gregorian and Hebrew date fields default to today; future-date validation with single error line below date row
+- **WhatsApp URL fix:** switched to URL-safe Base64 (RFC 4648) — `?data=` param now contains only `A-Za-z0-9-_`, no `%2B`/`%3D`; WhatsApp recognizes it as a hyperlink. Decompressor falls back through EncodedURIComponent and plain Base64 for old URLs.
+- Note: Service Worker caches old JS — users need to close+reopen app (or clear site data) to get new version
 
 **Deployment:**
 - AWS CLI at `C:\Program Files\Amazon\AWSCLIV2\aws.exe`
@@ -207,4 +219,4 @@ bubblewrap build
 
 ---
 
-*Last updated: 2026-06-27*
+*Last updated: 2026-06-27 (evening)*
