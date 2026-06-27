@@ -249,7 +249,7 @@ export default function ToggleColorMode() {
             textShadow: "0px 4px 12px rgba(0,0,0,0.4)" }}>
             יזכור
           </div>
-          <div className="splash-tap-hint">הקש להתחיל</div>
+          <div className="splash-tap-hint">התחל</div>
         </div>
       )}
     </>
