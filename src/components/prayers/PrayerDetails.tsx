@@ -203,12 +203,13 @@ const PrayerDetails: React.FC = () => {
   };
 
   const handleCopyClick = () => {
-    console.log("handleCopyClick textValue " + compressedUrl);
     const fullUrl = `${baseUrl}/#/?data=${encodeURIComponent(compressedUrl)}`;
+    const name = [formData.firstName, formData.lastName].filter(Boolean).join(" ");
+    const text = `תפילות לעילוי נשמת ${name} ז״ל\n${fullUrl}`;
     if (navigator && navigator.clipboard)
-      navigator.clipboard.writeText(fullUrl);
+      navigator.clipboard.writeText(text);
     else {
-      handleCopyClickPolyfill(fullUrl);
+      handleCopyClickPolyfill(text);
     }
   };
 
