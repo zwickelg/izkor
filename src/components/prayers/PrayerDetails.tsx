@@ -1,8 +1,7 @@
 // src/pages/DetailsPage.tsx
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { setGraveLocation } from "../../features/izkor/izkorSlice";
 import { useNavigate } from "react-router-dom";
 import PrayerButtons from "../utils/PrayerButtons";
 import { handleWriteUrl, NfcTagNotEmptyError } from "../utils/NfcHandler";
@@ -19,7 +18,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import {
   Container,
   Stack,
@@ -37,10 +35,6 @@ import {
   Button,
   CircularProgress,
 } from "@mui/material";
-
-const WazeIcon: React.FC = () => (
-  <img src={`${process.env.PUBLIC_URL}/images/waze-icon.svg`} width={24} height={24} alt="Waze" />
-);
 
 const baseUrl = window.location.origin;
 
@@ -105,9 +99,7 @@ const PrayerDetails: React.FC = () => {
   const [nfcOpen, setNfcOpen] = useState(false);
   const [nfcStatus, setNfcStatus] = useState<"idle" | "waiting" | "confirm-overwrite" | "success" | "error">("idle");
   const [nfcError, setNfcError] = useState("");
-  const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "error">("idle");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const formData = useSelector((state: RootState) => state.izkor);
 
   useEffect(() => {
@@ -194,25 +186,6 @@ const PrayerDetails: React.FC = () => {
       );
     }
   };
-  const handleSaveLocation = () => {
-    if (!navigator.geolocation) { setLocationStatus("error"); return; }
-    setLocationStatus("loading");
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        dispatch(setGraveLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }));
-        setLocationStatus("idle");
-      },
-      () => setLocationStatus("error"),
-      { enableHighAccuracy: true, timeout: 10000 }
-    );
-  };
-
-  const handleShareWithWaze = () => {
-    if (!formData.graveLocation) return;
-    const { lat, lng } = formData.graveLocation;
-    window.open(`https://waze.com/ul?ll=${lat},${lng}&navigate=yes`, "_blank");
-  };
-
   const handleShareWithWhatsApp = () => {
     const shareableUrl = `${baseUrl}/#/?data=${compressedUrl}`;
     const name = [formData.firstName, formData.lastName].filter(Boolean).join(" ");
@@ -345,21 +318,6 @@ const PrayerDetails: React.FC = () => {
                 )}
               </Stack>
 
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", pt: 1, gap: 0.5 }}>
-                <Button
-                  size="small"
-                  startIcon={locationStatus === "loading" ? <CircularProgress size={16} /> : <LocationOnIcon />}
-                  onClick={handleSaveLocation}
-                  disabled={locationStatus === "loading"}
-                  color={formData.graveLocation ? "success" : "primary"}
-                  variant="outlined"
-                >
-                  {formData.graveLocation ? "מיקום קבר נשמר ✓" : "שמור מיקום קבר"}
-                </Button>
-                {locationStatus === "error" && (
-                  <Typography variant="caption" color="error">לא ניתן לגשת למיקום</Typography>
-                )}
-              </Box>
             </CardContent>
           </Card>
         </Grow>
@@ -410,14 +368,6 @@ const PrayerDetails: React.FC = () => {
             label="NFC"
             onClick={() => { handleNfcClick(); setShareOpen(false); }}
           />
-          {formData.graveLocation && (
-            <ShareOption
-              icon={<WazeIcon />}
-              label="וייז"
-              color="#05C3FF"
-              onClick={() => { handleShareWithWaze(); setShareOpen(false); }}
-            />
-          )}
         </Stack>
       </SwipeableDrawer>
 

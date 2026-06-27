@@ -9,7 +9,6 @@ interface IzkorState {
   version: "sephardic" | "ashkenazic";
   mode: "readonly" | "all";
   deathDate: string;
-  graveLocation: { lat: number; lng: number } | null;
 }
 
 const initialState: IzkorState = {
@@ -21,7 +20,6 @@ const initialState: IzkorState = {
   version: "ashkenazic",
   mode: "all",
   deathDate: "",
-  graveLocation: null,
 };
 
 export const izkorSlice = createSlice({
@@ -52,9 +50,6 @@ export const izkorSlice = createSlice({
     setDeathDate: (state, action: PayloadAction<string>) => {
       state.deathDate = action.payload;
     },
-    setGraveLocation: (state, action: PayloadAction<{ lat: number; lng: number } | null>) => {
-      state.graveLocation = action.payload;
-    },
     updateFields: (state, action: PayloadAction<Partial<IzkorState>>) => {
       state.mode = "readonly";
       Object.assign(state, action.payload);
@@ -70,7 +65,6 @@ export const {
   setParentName,
   setVersion,
   setDeathDate,
-  setGraveLocation,
   updateFields,
 } = izkorSlice.actions;
 
