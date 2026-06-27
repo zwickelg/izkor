@@ -54,10 +54,6 @@ const ShareOption = ({ icon, label, color, onClick }: { icon: React.ReactNode; l
   </Box>
 );
 
-interface CustomHTMLElement extends HTMLElement {
-  webkitRequestFullscreen?: () => void;
-}
-
 // Helper component for detail rows
 const DetailRow = ({
   label,
@@ -101,12 +97,6 @@ const PrayerDetails: React.FC = () => {
   }, []);
 
   const handleNext = () => {
-    const elem = document.documentElement as CustomHTMLElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch(() => {});
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    }
     navigate(`/page2`);
     window.scrollTo(0, 0);
   };
