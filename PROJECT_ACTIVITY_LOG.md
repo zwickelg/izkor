@@ -20,7 +20,15 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 | Hash | Date | Summary |
 |------|------|---------|
-| *(pending)* | 2026-06-27 | Add grave location capture (geolocation) + Waze navigation icon in PrayerDetails |
+| `f5f23df` | 2026-06-28 | Change splash text to "התחל" |
+| `d496126` | 2026-06-28 | Skip splash screen when opening shared WhatsApp link |
+| `0792669` | 2026-06-28 | Add splash screen: tap to enter triggers fullscreen |
+| `df9d637` | 2026-06-28 | Go fullscreen on first user interaction (removed, replaced by splash) |
+| `b23d65e` | 2026-06-28 | Request fullscreen on first navigation (MainForm + PrayerDetails) |
+| `1c21ac5` | 2026-06-28 | Remove requestFullscreen; revert TWA to standalone |
+| `33b1d16` | 2026-06-27 | Restore original fullscreen order (requestFullscreen before navigate) |
+| `5773b4f` | 2026-06-27 | Fix fullscreen timing; clear default death date |
+| `78bf436` | 2026-06-27 | Add grave location capture + Waze navigation icon (official SVG) |
 | `31a2338` | 2026-06-27 | Revert Waze/location feature; fix WhatsApp URL encoding (URL-safe Base64) |
 | `383479a` | 2026-06-27 | Fix WhatsApp link + Waze icon (superseded by revert) |
 | `fb0768c` | 2026-06-27 | Add grave location + Waze share (reverted) |
@@ -51,10 +59,10 @@ Users enter the name/gender/details of a deceased person → the app guides them
 
 ---
 
-## Current State (as of 2026-06-27)
+## Current State (as of 2026-06-28)
 
 ### Uncommitted Changes
-None — branch fully committed and pushed.
+None — branch fully committed and pushed (through `f5f23df`).
 
 ### Google Play Publishing Status
 - Developer account (`zwickelg@gmail.com`, ID: `5848737244631385419`) was closed on Mar 14, 2024 due to inactivity.
@@ -174,6 +182,8 @@ bubblewrap build
 
 **Recent completed work (this session):**
 - **Grave location + Waze:** Added geolocation button ("שמור מיקום נוכחי") to MainForm; `graveLocation` stored in Redux and serialized into shared URL; Waze icon (official SVG from uxwing.com) shown in PrayerDetails when location is set; clicking opens Waze navigation to coordinates.
+- **Fullscreen (TWA/Android):** `requestFullscreen()` is called on navigation from MainForm and PrayerDetails. TWA stays `display: "standalone"` (fullscreen mode caused Android nav bar to disappear). Splash screen on app open triggers fullscreen on first tap; skipped for shared WhatsApp links. Death date fields now start empty (no default to today).
+- **Splash screen:** Logo + "יזכור" + pulsing "התחל". Tap → fullscreen + fade out. Not shown on print page or shared links.
 
 
 - Built Android TWA app using Bubblewrap (package: `com.izkor.app`)
@@ -219,4 +229,4 @@ bubblewrap build
 
 ---
 
-*Last updated: 2026-06-27 (evening)*
+*Last updated: 2026-06-28*
