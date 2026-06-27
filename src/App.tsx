@@ -102,7 +102,8 @@ export default function ToggleColorMode() {
   // Use a more robust check that handles both initial load and subsequent navigation
   const isPrintPage = window.location.hash.includes("/print") || window.location.href.includes("/print");
 
-  const [showSplash, setShowSplash] = React.useState(!isPrintPage);
+  const isSharedLink = window.location.hash.includes("?data=") || window.location.search.includes("data=");
+  const [showSplash, setShowSplash] = React.useState(!isPrintPage && !isSharedLink);
   const [splashFading, setSplashFading] = React.useState(false);
 
   const handleSplashTap = () => {
