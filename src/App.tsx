@@ -98,6 +98,18 @@ export default function ToggleColorMode() {
   const increaseFont = () => setFontSize(prev => Math.min(prev + 0.25, 4));
   const decreaseFont = () => setFontSize(prev => Math.max(prev - 0.25, 1));
 
+  React.useEffect(() => {
+    const requestFs = () => {
+      document.documentElement.requestFullscreen?.({ navigationUI: "hide" }).catch(() => {});
+    };
+    document.addEventListener("touchstart", requestFs, { once: true, passive: true });
+    document.addEventListener("click", requestFs, { once: true });
+    return () => {
+      document.removeEventListener("touchstart", requestFs);
+      document.removeEventListener("click", requestFs);
+    };
+  }, []);
+
   // Force light mode for printing
   // Use a more robust check that handles both initial load and subsequent navigation
   const isPrintPage = window.location.hash.includes("/print") || window.location.href.includes("/print");
