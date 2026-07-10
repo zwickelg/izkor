@@ -65,10 +65,9 @@ Users enter the name/gender/details of a deceased person → the app guides them
 None — branch fully committed and pushed (through `f5f23df`).
 
 ### Google Play Publishing Status
-- Developer account (`zwickelg@gmail.com`, ID: `5848737244631385419`) was closed on Mar 14, 2024 due to inactivity.
-- Cannot create new account with same Google account — blocked by Google.
-- Appeal submitted via Google Play support form (June 2026). Awaiting response (1–5 business days).
-- If appeal fails: register new developer account with a different Google account ($25 fee), then update package name in `twa-manifest.json` and rebuild APK.
+- Developer account (`zwickelg@gmail.com`, ID: `5848737244631385419`) created **Dec 8, 2020**; closed Mar 14, 2024 due to inactivity; appeal submitted June 2026.
+- **Reinstated as of 2026-07-10.** Account is active — ready to upload AAB + store listing.
+- Account predates Google's Nov 2023 "new personal developer account" policy, so the 12-testers/14-day closed-testing requirement likely does **not** apply — confirm in Play Console (Testing → Closed testing) before assuming a direct-to-production release is possible.
 
 ### Play Store Assets (`play-store-assets/`)
 | File | Description |
@@ -222,11 +221,12 @@ bubblewrap build
 **Pending TODO items:** image upload, download link, quit instructions, screen size adjustment, X usage limits.
 
 **Play Store next steps:**
-1. Wait for Google appeal response (zwickelg@gmail.com)
+1. ✅ Google appeal approved — account reinstated (2026-07-10)
 2. ✅ Retake `screenshot_03` and `screenshot_07` — done (2026-06-27)
 3. ✅ Take share drawer screenshot — done (`screenshot_share_drawer.png`, dark mode, 2026-06-27)
-4. Once account reinstated (or new account created): upload AAB + store listing
+4. ✅ AAB rebuilt (v3) — `app-release-bundle.aab` + `app-release-signed.apk` at repo root (2026-07-10)
+5. Upload AAB to Play Console + fill in store listing (assets in `play-store-assets/`)
 
 ---
 
-*Last updated: 2026-06-28*
+*Last updated: 2026-07-10*
